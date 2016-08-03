@@ -16,11 +16,11 @@ Get your basic server working.  Follow the steps from the mini-project to setup 
 
 We are going to be working with a single table, products.  It's schema will look something like this:
 
-ID : Primary key number
-Name : string
-Description: string
-Price: number
-Imageurl : string
+* ID : Primary key number
+* Name : string
+* Description: string
+* Price: number
+* Imageurl : string
 
 ## Create your .sql files
 
