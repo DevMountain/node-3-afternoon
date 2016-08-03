@@ -12,6 +12,16 @@ Get your basic server working.  Follow the steps from the mini-project to setup 
 * Require MassiveJS and Connect to a database (make a new one, or use one you've already made).
 * Add db to our express app, put the massive instance on there and export our app (see the mini-project)
 
+## Understand your data
+
+We are going to be working with a single table, products.  It's schema will look something like this:
+
+ID : Primary key number
+Name : string
+Description: string
+Price: number
+Imageurl : string
+
 ## Create your .sql files
 
 * Create a folder called db and place 5 files in there:
@@ -22,10 +32,6 @@ Get your basic server working.  Follow the steps from the mini-project to setup 
   * delete_product
   
 * Create a working SQL query for each one.  You can use pgAdmin to test your queries against the database.
-
-__product schema__
-
-The product schema should have a name, a description, a price, and an image url.
 
 __create_product__
 
