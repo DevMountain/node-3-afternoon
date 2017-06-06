@@ -2,15 +2,15 @@
 
 Today we're going to make our first full CRUD back-end.
 
-I'll be referring to this mini project through these instructions : https://github.com/DevMountain/mini-sql-node-massive
+It is recommended you do the mini project before this project. That can be found here : https://github.com/DevMountain/mini-sql-node-massive
 
 ## Setup your server
 
-Get your basic server working.  Follow the steps from the mini-project to setup a server :
+Get your basic server working.  Follow these steps to setup a server :
 
 * Require and setup express and get it listening on a port
-* Require MassiveJS and Connect to a database (make a new one, or use one you've already made).
-* Add db to our express app, put the massive instance on there and export our app (see the mini-project)
+* Require Massive and connect to a database (make a new one, or use one you've already made).
+* In the .then callback from Massive, use app.set to set 'db' to be your database instance.
 
 ## Understand your data
 
@@ -59,7 +59,7 @@ This query will take in an id.  Find and delete the product with the id.
 * Create a productsCtrl.js
     * Export an object with 5 functions
         * Create, GetOne, GetAll, Update, Delete
-    * At the top of the controller (outside the object), get the db object off of our express app (see mini-project)
+    * Inside of each function, access the database instance by using `req.app.get('db')`.
     * Inside of Create use the create_product query
     * Inside of GetAll use the read_products query
     * Inside of GetOne, use the read_product query
@@ -81,8 +81,7 @@ __Sample Urls__
 
 ## Wire your endpoints up to your controller
 
-* Get any information you need off of the query parameters, query, or body and pass them into your controller
-* You will need to add parameters in your controller functions to receive these values.
+* use the syntax `app.get('/path/to/my/endpoint, controller.methodName)`.
 
 ## Test
 
