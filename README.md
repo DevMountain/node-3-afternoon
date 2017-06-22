@@ -13,7 +13,7 @@ In this step. we are going to create a bare-bones server.
 ### Instructions
 
 * Run `npm init -y`.
-* Use npm to install and save `express`, `bodyParser`, `cors`, and `massive`.
+* Use npm to install and save `express`, `body-parser`, `cors`, and `massive`.
 * Create a `.gitignore` to ignore the `node_modules` folder.
 * Create an `index.js` file.
 * Require all the packages that we installed and saved.
@@ -57,50 +57,143 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 ### Instructions
 
-* Create a `connectionString` variable that connects to the `sanbox` database. ( This database was created when following the mini earlier today ).
+* Create a `connectionString` variable that connects to the `sandbox` database. 
+  * Create the `sanbox` database if it doesn't exist.
 * Use `massive` and the `connectionString` to establish a connection.
 * In the `.then` callback from `massive`, set `db` on app to equal the database instance.
 
-## Understand your data
+### Solution
 
-We are going to be working with a single table, products.  It's schema will look something like this:
+<details>
 
-* ID : Primary key number
-* Name : string
-* Description: string
-* Price: number
-* Imageurl : string
+<summary> <code> index.js </code> </summary>
 
-## Create your .sql files
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const massive = require('massive');
+const connectionString = "postgres://username:password@localhost/sandbox";
 
-* Create a folder called db and place 5 files in there:
-  * create_product
-  * read_products
-  * read_product
-  * update_product
-  * delete_product
-  
-* Create a working SQL query for each one.  You can use pgAdmin to test your queries against the database.
+const app = express();
+massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
 
-__create_product__
+const port = 3000;
+app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+```
 
-This query will need to take the 4 parameters defined in the schema and insert a record into the database.
+</details>
 
-__read_products__
+## Step 3
 
-This query will get all products in the table and return only the name, price, and image url
+### Summary
 
-__read_product__
+In this step, we are going to create our table and the `.sql` files we'll need to preform operations on our data. The schema for our table will look like:
 
-This query will take in an id and return all data for that product
+* ID - Serial Primary Key
+* Name - varchar(40)
+* Description - varchar(80)
+* Price - integer
+* Imageurl - text
 
-__update_product__
+### Instructions
 
-This query will take in an id and a new description.  Find the product with the id and update it's description with the new description.
+* Create a `Products` table in the `sandbox` database.
+* Create a folder called `db`.
+  * Create a `create_product.sql` file.
+  * Create a `read_products.sql` file.
+  * Create a `read_product.sql` file.
+  * Create a `update_product.sql` file.
+  * Create a `delete_product.sql` file.
+* `create_product.sql`:
+  * Should be able to add a new product to the `Products` table.
+  * Should have four parameters ( Name, Description, Price, ImageUrl ).
+* `read_products.sql`:
+  * Should be able to return all products from the `Products` table.
+* `read_product.sql`:
+  * Should be able to returna a specific product from the `Products` table.
+  * Should use a parameter to find the product whose `ProductID` matches.
+* `update_product.sql`:
+  * Should be able to update the description of a specific product from the `Products` table.
+  * Should use a parameter to find the product whose `ProductID` matches.
+  * Should use a parameter to update the value of the `Description`.
+* `delete_product.sql`:
+  * Should be able to delete a specific product from the `Products` table.
+  * Should use a parameter to find the product whose `ProductID` matches.
 
-__delete_product__
+### Solution
 
-This query will take in an id.  Find and delete the product with the id.
+<details>
+
+<summary> <code> CREATE TABLE Products </code> </summary>
+
+```sql
+CREATE TABLE Products (
+  ProductID SERIAL PRIMARY KEY NOT NULL,
+  Name varchar(40) NOT NULL,
+  Description varchar(80) NOT NULL,
+  Price integer NOT NULL,
+  ImageUrl text NOT NULL
+);
+```
+
+</details>
+
+<details>
+
+<summary> <code> SQL </code> </summary>
+
+<details>
+
+<summary> <code> create_product.sql </code> </summary>
+
+```sql
+INSERT INTO Products ( Name, Description, Price, ImageUrl ) VALUES ( $1, $2, $3, $4 );
+```
+
+</details>
+
+<details>
+
+<summary> <code> read_products.sql </code> </summary>
+
+```sql
+SELECT * FROM Products;
+```
+
+</details>
+
+<details>
+
+<summary> <code> read_product.sql </code> </summary>
+
+```sql
+SELECT * FROM Products WHERE ProductID = $1;
+```
+
+</details>
+
+<details>
+
+<summary> <code> update_product.sql </code> </summary>
+
+```sql
+UPDATE Products SET Description = $2 WHERE ProductID = $1;
+```
+
+</details>
+
+<details>
+
+<summary> <code> delete_product.sql </code> </summary>
+
+```sql
+DELETE FROM Products WHERE ProductID = $1;
+```
+
+</details>
+
+</details>
 
 
 ## Run your queries in your controller
