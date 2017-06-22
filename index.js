@@ -4,7 +4,7 @@ const cors = require('cors');
 const massive = require('massive');
 const connectionString = "postgres://username:password@localhost/sandbox";
 
-const app = express();
+const app = module.exports = express();
 massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
 
 const port = 3000;

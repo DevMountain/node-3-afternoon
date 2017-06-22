@@ -196,17 +196,112 @@ DELETE FROM Products WHERE ProductID = $1;
 </details>
 
 
-## Run your queries in your controller
+## Step 4
 
-* Create a productsCtrl.js
-    * Export an object with 5 functions
-        * Create, GetOne, GetAll, Update, Delete
-    * Inside of each function, access the database instance by using `req.app.get('db')`.
-    * Inside of Create use the create_product query
-    * Inside of GetAll use the read_products query
-    * Inside of GetOne, use the read_product query
-    * Inside of Update, use the update_product query
-    * Inside of Delete, use the delete_product query
+### Summary
+
+In this step, we will export our `app` so we can create a controller that will use the database instance.
+
+### Instructions
+
+* Use `module.exports` to export `app`.
+
+### Solution
+
+<details>
+
+<summary> <code> index.js </code> </summary>
+
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const massive = require('massive');
+const connectionString = "postgres://username:password@localhost/sandbox";
+
+const app = module.exports = express();
+massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
+
+const port = 3000;
+app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+```
+
+</details>
+
+## Step 5
+
+### Summary
+
+In this step, we will create a `products_controoler.js` file to will handle the logic of interacting with the database.
+
+### Instructions
+
+* Create a `products_controller.js` file.
+* Use `module.exports` to export an object with five methods.
+  * `create`, `getOne`, `getAll`, `update`, and `delete`.
+* Inside of each method, access the database instance.
+* Inside of each method use the correct SQL file.
+  * `create` -> `create_product.sql`.
+  * `getOne` -> `read_product.sql`.
+  * `getAll` -> `read_products.sql`.
+  * `update` -> `update_product.sql`.
+  * `delete` -> `delete_product.sql`.
+* Don't worry about the parameter(s) in this step.
+* `create`, `update`, and `delete` should send status 200 on success and status 500 on failure.
+* `getOne` should send status 200 and the product on success and status 500 on failure.
+* `getAll` should send status 200 and the products on success and status 500 on failure.
+
+### Solution
+
+<details>
+
+<summary> <code> products_controller.js </code> </summary>
+
+```js
+module.exports = {
+  create: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.create_product()
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  },
+
+  getOne: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.read_product()
+      .then( product => res.status(200).send( product ) )
+      .catch( () => res.status(500).send() );
+  },
+
+  getAll: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.read_products()
+      .then( products => res.status(200).send( products ) )
+      .catch( () => res.status(500).send() );
+  },
+
+  update: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.update_product()
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  },
+
+  delete: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.delete_product()
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  }
+};
+```
+
+</details>
     
 
 ## Create endpoints
