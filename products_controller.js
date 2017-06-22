@@ -9,8 +9,9 @@ module.exports = {
 
   getOne: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
+    const { params } = req; 
 
-    dbInstance.read_product()
+    dbInstance.read_product([ params.id ])
       .then( product => res.status(200).send( product ) )
       .catch( () => res.status(500).send() );
   },
@@ -25,16 +26,18 @@ module.exports = {
 
   update: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
+    const { params, query } = req;
 
-    dbInstance.update_product()
+    dbInstance.update_product([ params.id, query.desc ])
       .then( () => res.status(200).send() )
       .catch( () => res.status(500).send() );
   },
 
   delete: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
+    const { params } = req;
 
-    dbInstance.delete_product()
+    dbInstance.delete_product([ params.id ])
       .then( () => res.status(200).send() )
       .catch( () => res.status(500).send() );
   }

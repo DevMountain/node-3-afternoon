@@ -302,36 +302,149 @@ module.exports = {
 ```
 
 </details>
-    
 
-## Create endpoints
+## Step 6
 
-* Create some endpoints on express.  Create one for each query type.
+### Summary
 
-__Sample Urls__
+In this step, we will create endpoints that will call the methods on our controller. We will also require our controller in `index.js`.
 
-`GET  /api/products`
-`GET  /api/product/:productId`
-`PUT  /api/product/:productId?desc=....`
-`POST /api/product`
-`DELETE /api/product/:productId`
+### Instructions
 
-## Wire your endpoints up to your controller
+* Create the following endpoints: ( `request method`, `url`, `controller method` )
+  * `GET` - `/api/products` - `getAll`.
+  * `GET` - `/api/product/:id` - `getOne`.
+  * `PUT` - `/api/product/:id?desc=...` - `update`.
+  * `POST` - `/api/product` - `create`.
+  * `DELETE` - `/api/product/:id` - `delete`.
 
-* use the syntax `app.get('/path/to/my/endpoint, controller.methodName)`.
+### Solution
 
-## Test
+<details>
 
-* You should have a working crud app.  Use postman to insert a few records, modify them, query them, and delete them to make sure it's all working.
+<summary> <code> index.js </code> </summary>
+
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const massive = require('massive');
+const connectionString = "postgres://username:password@localhost/sandbox";
+const pc = require('./products_controller');
+
+const app = module.exports = express();
+massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
+
+app.post( '/api/product', pc.create );
+app.get( '/api/products', pc.getAll );
+app.get( '/api/product/:id', pc.getOne );
+app.put( '/api/product/:id', pc.update );
+app.delete( '/api/product/:id', pc.delete );
+
+const port = 3000;
+app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+```
+
+</details>
+
+
+## Step 7
+
+### Summary
+
+In this step, we'll modify the controller to use parameters.
+
+### Instructions
+
+* Open `products_controller.js`.
+* Modify `update` to use `id` from `req.params` and `desc` from `req.query`.
+* Modify `getOne` to use `id` from `req.params`.
+* Modify `delete` to use `id` from `req.params`.
+
+### Solution
+
+<details>
+
+<summary> <code> products_controller.js </code> </summary>
+
+```js
+module.exports = {
+  create: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.create_product()
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  },
+
+  getOne: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+    const { params } = req; 
+
+    dbInstance.read_product([ params.id ])
+      .then( product => res.status(200).send( product ) )
+      .catch( () => res.status(500).send() );
+  },
+
+  getAll: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.read_products()
+      .then( products => res.status(200).send( products ) )
+      .catch( () => res.status(500).send() );
+  },
+
+  update: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+    const { params, query } = req;
+
+    dbInstance.update_product([ params.id, query.desc ])
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  },
+
+  delete: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+    const { params } = req;
+
+    dbInstance.delete_product([ params.id ])
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  }
+};
+```
+
+</details>
+
+## Step 8
+
+### Summary
+
+In this step, we'll test to make sure all the endpoint are working.
+
+### Instructions
+
+* Import the provided `postman_collection` into postman and make sure all the tests pass.
+
+### Solution
+
+<b> insert img here </b>
 
 ## Black Diamond
 
-* Create an angular front end to interact with your app.
-* Use express static to serve up your angular files from a public folder
+* Create a React front end to interact with your app.
+* Use express static to serve up your React files from a build folder
 * Create a single view that can insert, read, update, and delete products.
-* Create a 2nd page that just reads the products and displays them in a more pretty way (like Jane.com or amazon).
+* Create a second view that just reads the products and displays them in a pretty way (like Jane.com or amazon).
 
+## Contributions
+
+If you see a problem or a typo, please fork, make the necessary changes, and create a pull request so we can review your changes and merge them into the master repo and branch.
 
 ## Copyright
 
-© DevMountain LLC, 2016. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
+© DevMountain LLC, 2017. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
+
+<p align="center">
+<img src="https://devmounta.in/img/logowhiteblue.png" width="250">
+</p>
