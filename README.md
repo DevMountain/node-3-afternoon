@@ -42,6 +42,8 @@ const cors = require('cors');
 const massive = require('massive');
 
 const app = express();
+app.use( bodyParser.json() );
+app.use( cors() );
 
 const port = 3000;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
@@ -76,6 +78,8 @@ const massive = require('massive');
 const connectionString = "postgres://username:password@localhost/sandbox";
 
 const app = express();
+app.use( bodyParser.json() );
+app.use( cors() );
 massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
 
 const port = 3000;
@@ -220,6 +224,8 @@ const massive = require('massive');
 const connectionString = "postgres://username:password@localhost/sandbox";
 
 const app = module.exports = express();
+app.use( bodyParser.json() );
+app.use( cors() );
 massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
 
 const port = 3000;
@@ -333,6 +339,8 @@ const connectionString = "postgres://username:password@localhost/sandbox";
 const pc = require('./products_controller');
 
 const app = module.exports = express();
+app.use( bodyParser.json() );
+app.use( cors() );
 massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
 
 app.post( '/api/product', pc.create );
@@ -352,7 +360,7 @@ app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 
 ### Summary
 
-In this step, we'll modify the controller to use parameters.
+In this step, we'll modify the controller to use parameters or the request body.
 
 ### Instructions
 
@@ -360,6 +368,7 @@ In this step, we'll modify the controller to use parameters.
 * Modify `update` to use `id` from `req.params` and `desc` from `req.query`.
 * Modify `getOne` to use `id` from `req.params`.
 * Modify `delete` to use `id` from `req.params`.
+* Modify the `create` to use `name`, `description`, `price`, and `imageurl` from the request body.
 
 ### Solution
 
@@ -371,8 +380,9 @@ In this step, we'll modify the controller to use parameters.
 module.exports = {
   create: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
+    const { name, description, price, imageurl } = req.body;
 
-    dbInstance.create_product()
+    dbInstance.create_product([ name, description, price, imageurl ])
       .then( () => res.status(200).send() )
       .catch( () => res.status(500).send() );
   },

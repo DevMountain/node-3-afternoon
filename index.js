@@ -2,10 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
-const connectionString = "postgres://username:password@localhost/sandbox";
+const connectionString = "postgres://jameslemire:9829@localhost/sandbox";
 const pc = require('./products_controller');
 
 const app = module.exports = express();
+app.use( bodyParser.json() );
+app.use( cors() );
 massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
 
 app.post( '/api/product', pc.create );
