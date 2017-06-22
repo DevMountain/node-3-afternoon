@@ -1,16 +1,65 @@
-# sql-massive-node
+<img src="https://devmounta.in/img/logowhiteblue.png" width="250" align="right">
 
-Today we're going to make our first full CRUD back-end.
+# Project Summary
 
-It is recommended you do the mini project before this project. That can be found here : https://github.com/DevMountain/mini-sql-node-massive
+In this project, we are going to make our first full CRUD back-end that uses a database.
 
-## Setup your server
+## Step 1
 
-Get your basic server working.  Follow these steps to setup a server :
+### Summary
 
-* Require and setup express and get it listening on a port
-* Require Massive and connect to a database (make a new one, or use one you've already made).
-* In the .then callback from Massive, use app.set to set 'db' to be your database instance.
+In this step. we are going to create a bare-bones server.
+
+### Instructions
+
+* Run `npm init -y`.
+* Use npm to install and save `express`, `bodyParser`, `cors`, and `massive`.
+* Create a `.gitignore` to ignore the `node_modules` folder.
+* Create an `index.js` file.
+* Require all the packages that we installed and saved.
+* Get your server listening on port `3000`.
+
+### Solution
+
+<details>
+
+<summary> <code> .gitignore </code> </summary>
+
+```
+node_modules
+```
+
+</details>
+
+<details>
+
+<summary> <code> index.js </code> </summary>
+
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const massive = require('massive');
+
+const app = express();
+
+const port = 3000;
+app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+```
+
+</details>
+
+## Step 2
+
+### Summary
+
+In this step, we are going to add massive to the server so we can connect to a database.
+
+### Instructions
+
+* Create a `connectionString` variable that connects to the `sanbox` database. ( This database was created when following the mini earlier today ).
+* Use `massive` and the `connectionString` to establish a connection.
+* In the `.then` callback from `massive`, set `db` on app to equal the database instance.
 
 ## Understand your data
 
