@@ -600,7 +600,7 @@ In this step, we'll modify the controller to use parameters or the request body.
 
 <br />
 
-Now that we know how our routes are configured we can update our controller to reflect those changes. We'll modify `update` to use `id` from the request parameters and the `desc` from the request query. We'll modify `getOne` to use `id` from the request parameters. We'll modify `delete` to use `id` from the request parameters. And we'll modify `create` to use `name`, `description`, `price` and `imageurl` from the request body.
+Now that we know how our routes are configured, we can update our controller to reflect those changes. We'll modify `update` to use `id` from the request parameters and the `desc` from the request query. We'll modify `getOne` to use `id` from the request parameters. We'll modify `delete` to use `id` from the request parameters. And we'll modify `create` to use `name`, `description`, `price` and `imageurl` from the request body. When adding parameters to sql, all you have to do is passing in an array as the first argument and then the element in the array map to `$1`, `$2`, etc... For example: `dbInstance.create_product([ name, description, price, imageurl ])`, name is `$1`, description is `$2`, price is `$3`, and imageurl is `$4`.
 
 ```js
 module.exports = {
