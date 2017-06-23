@@ -434,6 +434,52 @@ module.exports = {
 
 Now that our methods have access to the `dbInstance` we can execute our sql files by chaining on `.file_name`. For example, if I wanted to execute `read_product` I would use `dbInstance.read_product()`. Knowing this we can execute our sql files in every method. Chain a `.then` to use `res` to send status 200 and chain a `.catch` to use `res` to send status 500. The `getOne` and `getAll` method should also send `product` and `products` on success.
 
+```js
+module.exports = {
+  create: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.create_product()
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  },
+
+  getOne: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.read_product()
+      .then( product => res.status(200).send( product ) )
+      .catch( () => res.status(500).send() );
+  },
+
+  getAll: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.read_products()
+      .then( products => res.status(200).send( products ) )
+      .catch( () => res.status(500).send() );
+  },
+
+  update: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.update_product()
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  },
+
+  delete: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.delete_product()
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  }
+};
+```
+
+We'll worry about how to use parameters after we configure our routes. For right now, this is all we need to do.
+
 </details>
 
 ### Solution
@@ -485,9 +531,6 @@ module.exports = {
   }
 };
 ```
-
-We'll worry about how to use parameters after we configure our routes. For right now, this is all we need to do.
-
 </details>
 
 ## Step 6
