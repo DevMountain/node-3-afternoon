@@ -594,6 +594,64 @@ In this step, we'll modify the controller to use parameters or the request body.
 * Modify `delete` to use `id` from `req.params`.
 * Modify the `create` to use `name`, `description`, `price`, and `imageurl` from the request body.
 
+<details>
+
+<summary> Detailed Instructions </summary>
+
+<br />
+
+Now that we know how our routes are configured we can update our controller to reflect those changes. We'll modify `update` to use `id` from the request parameters and the `desc` from the request query. We'll modify `getOne` to use `id` from the request parameters. We'll modify `delete` to use `id` from the request parameters. And we'll modify `create` to use `name`, `description`, `price` and `imageurl` from the request body.
+
+```js
+module.exports = {
+  create: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+    const { name, description, price, imageurl } = req.body;
+
+    dbInstance.create_product([ name, description, price, imageurl ])
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  },
+
+  getOne: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+    const { params } = req; 
+
+    dbInstance.read_product([ params.id ])
+      .then( product => res.status(200).send( product ) )
+      .catch( () => res.status(500).send() );
+  },
+
+  getAll: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+
+    dbInstance.read_products()
+      .then( products => res.status(200).send( products ) )
+      .catch( () => res.status(500).send() );
+  },
+
+  update: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+    const { params, query } = req;
+
+    dbInstance.update_product([ params.id, query.desc ])
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  },
+
+  delete: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+    const { params } = req;
+
+    dbInstance.delete_product([ params.id ])
+      .then( () => res.status(200).send() )
+      .catch( () => res.status(500).send() );
+  }
+};
+```
+
+</details>
+
 ### Solution
 
 <details>
