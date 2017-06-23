@@ -1,0 +1,362 @@
+{
+	"id": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+	"name": "sql-massive-node",
+	"description": "",
+	"order": [
+		"a4776f22-fad2-4dce-42e2-8088dcbd993c",
+		"bccf9b9f-6562-7576-e268-084bfdb98a56",
+		"34051e66-dc30-b321-bc25-2686a75e7712",
+		"70850662-7a19-10c2-0d5a-d86aad689788",
+		"8f6e4fd6-93f2-7d24-c895-fbf65af97773",
+		"af91ba6c-c65b-2cd6-48ce-014196d64028",
+		"15ee780a-b066-25df-e7b3-cc41237ba472",
+		"230afa93-611a-6cd0-df0f-77dc0e1dcb1e",
+		"c80e1d08-36e7-8480-e9c2-a1b9935dca66",
+		"ba0fff18-07b6-c319-9407-4b6ed70eb11d",
+		"448bacf0-e1b5-5ea7-93cf-b3adf2e0ced1"
+	],
+	"folders": [],
+	"timestamp": 1498229958550,
+	"owner": "851632",
+	"public": false,
+	"requests": [
+		{
+			"id": "15ee780a-b066-25df-e7b3-cc41237ba472",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/product/{{productID_0}}",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "const res = JSON.parse( responseBody );\nconst isArray = Array.isArray( res );\nconst resLength = res.length === 1;\nconst updatedDescription = res[0].description === \"updated\";\n\ntests[ 'API can update the description' ] = isArray && resLength && updatedDescription;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233546067,
+			"name": "Check for update success",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\": \"name 2\",\n\t\"description\": \"description 2\",\n\t\"price\": 2,\n\t\"imageurl\": \"imageurl 2\"\n}"
+		},
+		{
+			"id": "230afa93-611a-6cd0-df0f-77dc0e1dcb1e",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/product/{{productID_0}}",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233179908,
+			"name": "Delete product0 from database",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "34051e66-dc30-b321-bc25-2686a75e7712",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/product",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233068164,
+			"name": "Add product2 to database",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\": \"name 2\",\n\t\"description\": \"description 2\",\n\t\"price\": 2,\n\t\"imageurl\": \"imageurl 2\"\n}"
+		},
+		{
+			"id": "448bacf0-e1b5-5ea7-93cf-b3adf2e0ced1",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/products",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "const res = JSON.parse( responseBody );\nconst data_length = postman.getGlobalVariable(\"data_length\");\n\ntests[ 'API can successfully remove products '] = res.length === (data_length - 3);\n\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233734789,
+			"name": "Check for delete success",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\": \"name 2\",\n\t\"description\": \"description 2\",\n\t\"price\": 2,\n\t\"imageurl\": \"imageurl 2\"\n}"
+		},
+		{
+			"id": "70850662-7a19-10c2-0d5a-d86aad689788",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/products",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "const res = JSON.parse( responseBody );\nconst isArray = Array.isArray( res );\n\nlet products = {\n  product0: null,\n  product1: null,\n  product2: null\n};\n\nvar counter = 0;\n\nfunction findProduct( x ) {\n  let product = products[`product${x}`] = res.find( product => (\n    product.name === `name ${x}` &&\n    product.description === `description ${x}` &&\n    product.price === x &&\n    product.imageurl === `imageurl ${x}`\n  ));\n  \n  if ( product ) {\n    postman.setGlobalVariable(`productID_${counter}`, product.productid);\n    counter++;\n  }\n}\n\nif ( isArray ) {\n  postman.setGlobalVariable(`data_length`, res.length);\n  let temp = [ 0, 1, 2 ];\n  temp.map( x => findProduct(x) );\n}\n\n\ntests[ 'API can create and read products' ] = isArray && products.product0 && products.product1 && products.product2;\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233910794,
+			"name": "Get all products",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\": \"name 2\",\n\t\"description\": \"description 2\",\n\t\"price\": 2,\n\t\"imageurl\": \"imageurl 2\"\n}"
+		},
+		{
+			"id": "8f6e4fd6-93f2-7d24-c895-fbf65af97773",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/product/{{productID_0}}",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "const res = JSON.parse( responseBody );\nconst isArray = Array.isArray( res );\nconst resLength = res.length === 1;\nlet hasAllProps = true;\n\nfunction hasProp( prop ) {\n  if ( !res[0].hasOwnProperty( prop ) ) {\n    hasAllProps = false;\n  }\n}\n\nconst temp = [ 'name', 'description', 'price', 'imageurl' ];\ntemp.map( prop => hasProp( prop ) );\n\ntests[ 'API can read a specific product' ] = isArray && resLength && hasAllProps;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233856304,
+			"name": "Get specific product",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\": \"name 2\",\n\t\"description\": \"description 2\",\n\t\"price\": 2,\n\t\"imageurl\": \"imageurl 2\"\n}"
+		},
+		{
+			"id": "a4776f22-fad2-4dce-42e2-8088dcbd993c",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/product",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498230040930,
+			"name": "Add product0 to database",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\": \"name 0\",\n\t\"description\": \"description 0\",\n\t\"price\": 0,\n\t\"imageurl\": \"imageurl 0\"\n}"
+		},
+		{
+			"id": "af91ba6c-c65b-2cd6-48ce-014196d64028",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/product/{{productID_0}}?desc=updated",
+			"queryParams": [
+				{
+					"key": "desc",
+					"value": "updated",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233854012,
+			"name": "Update a single product",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "ba0fff18-07b6-c319-9407-4b6ed70eb11d",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/product/{{productID_2}}",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233200323,
+			"name": "Delete product2 from database",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "bccf9b9f-6562-7576-e268-084bfdb98a56",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/product",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233057862,
+			"name": "Add product1 to database",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\": \"name 1\",\n\t\"description\": \"description 1\",\n\t\"price\": 1,\n\t\"imageurl\": \"imageurl 1\"\n}"
+		},
+		{
+			"id": "c80e1d08-36e7-8480-e9c2-a1b9935dca66",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:3000/api/product/{{productID_1}}",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498233184856,
+			"name": "Delete product1 from database",
+			"description": "",
+			"collectionId": "1bfc6c76-e2ae-2724-17ec-926dfbc86410",
+			"responses": [],
+			"rawModeData": ""
+		}
+	]
+}
