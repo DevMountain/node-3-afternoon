@@ -219,6 +219,8 @@ In this step, we are going to create our table and the `.sql` files we'll need t
 
 <summary> Detailed Instructions </summary>
 
+<br />
+
 Now that we a method of connecting to our database and have an instance ready to go on `app`, we are ready to start creating the `sql` files that will interact with our database. We'll make five `sql` files in this step. One for `creating` products; one for `reading` all products; one for `reading` a specific product; one for `updating` products; and one for `deleting` products. Let's create a folder called `db`. This where we'll store our `sql` files that we can execute later using the database instance.
 
 Inside the `db` folder, let's create a file called `create_product.sql`. This `sql` file will be responsible for creating a new product using four parameters. The four parameters are `Name`, `Description`, `Price`, and `ImageUrl`. To add something to a database we use the following syntax: `INSERT INTO Table ( column1, column2 ) VALUES ( value1, value2 );` The values we'll change are `Table`, `column`, and `value`. Since we want to insert into the `Products` table, we'll change `Table` to `Products`. Since we are updating the `Name`, `Description`, `Price`, and `ImageUrl`, we'll use those as the columns. And since we are using parameters for the values, we'll use `$1`, `$2`, `$3`, and `$4` as the values. The final syntax will look like:
