@@ -221,7 +221,19 @@ In this step, we are going to create our table and the `.sql` files we'll need t
 
 <br />
 
-Now that we a method of connecting to our database and have an instance ready to go on `app`, we are ready to start creating the `sql` files that will interact with our database. We'll make five `sql` files in this step. One for `creating` products; one for `reading` all products; one for `reading` a specific product; one for `updating` products; and one for `deleting` products. Let's create a folder called `db`. This where we'll store our `sql` files that we can execute later using the database instance.
+Now that we a method of connecting to our database and have an instance ready to go on `app`, we are ready to start creating the `sql` files that will interact with our database and a `Products` table. Let's begin by creating a `Products` table that follows the schema in the summary. The final syntax will look like:
+
+```sql
+CREATE TABLE Products (
+  ProductID SERIAL PRIMARY KEY NOT NULL,
+  Name varchar(40) NOT NULL,
+  Description varchar(80) NOT NULL,
+  Price integer NOT NULL,
+  ImageUrl text NOT NULL
+);
+```
+
+Now that we have a `Products` table, we'll make five `sql` files. One for `creating` products; one for `reading` all products; one for `reading` a specific product; one for `updating` products; and one for `deleting` products. Let's create a folder called `db`. This is where we'll store our `sql` files that we can execute later using the database instance.
 
 Inside the `db` folder, let's create a file called `create_product.sql`. This `sql` file will be responsible for creating a new product using four parameters. The four parameters are `Name`, `Description`, `Price`, and `ImageUrl`. To add something to a database we use the following syntax: `INSERT INTO Table ( column1, column2 ) VALUES ( value1, value2 );` The values we'll change are `Table`, `column`, and `value`. Since we want to insert into the `Products` table, we'll change `Table` to `Products`. Since we are updating the `Name`, `Description`, `Price`, and `ImageUrl`, we'll use those as the columns. And since we are using parameters for the values, we'll use `$1`, `$2`, `$3`, and `$4` as the values. The final syntax will look like:
 
@@ -241,7 +253,7 @@ Now let's move on to `read_product.sql`. Create a file in the `db` folder called
 SELECT * FROM Products WHERE ProductID = $1;
 ```
 
-Now let's move on to `update_product.sql`. Create a file in the `db` folder called `update_product.sql`. This `sql` file will be responsible for updating the description of a product by ID. To update data from a database we use the following syntax: `UPDATE Table SET column1 = value1 WHERE condition`. Since we are working with the `Products` table we'll change `Table` to `Products`. Since we are updating the description dynamically we'll set `column1` to `Description` and `value1` to `$2`. And since we are updating products by ID we'll set `condition` to `ProductID = $1`. The order of `$1` and `$2` doesn't matter as long as you following the same order in the `controller` file we'll create later. I personally just prefer `(id, value)` instead of `(value, id)`. The final syntax will look like:
+Now let's move on to `update_product.sql`. Create a file in the `db` folder called `update_product.sql`. This `sql` file will be responsible for updating the description of a product by ID. To update data from a database we use the following syntax: `UPDATE Table SET column1 = value1 WHERE condition`. Since we are working with the `Products` table we'll change `Table` to `Products`. Since we are updating the description dynamically we'll set `column1` to `Description` and `value1` to `$2`. And since we are updating products by ID we'll set `condition` to `ProductID = $1`. The order of `$1` and `$2` doesn't matter as long as you following the same order in the `controller` file. I personally prefer `(id, value)` instead of `(value, id)`. The final syntax will look like:
 
 ```sql
 UPDATE Products SET Description = $2 WHERE ProductID = $1;
