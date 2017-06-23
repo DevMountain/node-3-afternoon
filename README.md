@@ -438,7 +438,7 @@ In this step, we'll test to make sure all the endpoint are working.
 
 ### Solution
 
-<b> insert img here </b>
+<img src="https://github.com/DevMountain/sql-massive-node/blob/solution/readme-assets/1.png" />
 
 ## Black Diamond
 
