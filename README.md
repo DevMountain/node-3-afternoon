@@ -23,6 +23,8 @@ In this step. we are going to create a bare-bones server.
 
 <summary> Detailed Instructions </summary>
 
+<br />
+
 Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install --save express body-parser cors massive` to get all the packages we'll need for this project.
 
 After that is finished, we can see it created a `node_modules` folder. We never want to include this folder on GitHub, so let's create a `.gitignore` that will ignore `node_modules`. After that, we're ready to start creating our server. Create an `index.js` file and `require` all the packages we install at the top.
