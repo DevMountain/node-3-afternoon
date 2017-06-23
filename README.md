@@ -19,6 +19,63 @@ In this step. we are going to create a bare-bones server.
 * Require all the packages that we installed and saved.
 * Get your server listening on port `3000`.
 
+<details>
+
+<summary> Detailed Instructions </summary>
+
+Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install --save express body-parser cors massive` to get all the packages we'll need for this project.
+
+After that is finished, we can see it created a `node_modules` folder. We never want to include this folder on GitHub, so let's create a `.gitignore` that will ignore `node_modules`. After that, we're ready to start creating our server. Create an `index.js` file and `require` all the packages we install at the top.
+
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const massive = require('massive');
+```
+
+Now that our `index.js` file has access to all our packages, let's create a basic server. We'll begin saving `express()` to a variable called `app`.
+
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const massive = require('massive');
+
+const app = express();
+```
+
+Then, we'll want to use our `bodyParser` and `cors` middleware.
+
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const massive = require('massive');
+
+const app = express();
+app.use( bodyParser.json() );
+app.use( cors() );
+```
+
+Finally, we'll want to tell the server to listen on port 3000 and use a `console.log` to tell us when it is listening.
+
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const massive = require('massive');
+
+const app = express();
+app.use( bodyParser.json() );
+app.use( cors() );
+
+const port = 3000;
+app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+```
+
+</details>
+
 ### Solution
 
 <details>
