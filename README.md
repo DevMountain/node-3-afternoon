@@ -381,7 +381,7 @@ app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 
 ### Summary
 
-In this step, we will create a `products_controoler.js` file to will handle the logic of interacting with the database.
+In this step, we will create a `products_controller.js` file to will handle the logic of interacting with the database.
 
 ### Instructions
 
@@ -399,6 +399,42 @@ In this step, we will create a `products_controoler.js` file to will handle the 
 * `create`, `update`, and `delete` should send status 200 on success and status 500 on failure.
 * `getOne` should send status 200 and the product on success and status 500 on failure.
 * `getAll` should send status 200 and the products on success and status 500 on failure.
+
+<details>
+
+<summary> Detailed Instructions </summary>
+
+<br />
+
+Now that we have all the `sql` files we'll need to interact with our database, let's create a controller that will execute the `sql`. Create a file called `products_controller.js`. In this file, use `module.exports` to export an `object` with five methods. All methods should capture `req`, `res`, and `next` and create a variable for the database instance off of `req.app`. 
+
+```js
+module.exports = {
+  create: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+  },
+
+  getOne: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+  },
+
+  getAll: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+  },
+
+  update: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+  },
+
+  delete: ( req, res, next ) => {
+    const dbInstance = req.app.get('db');
+  }
+};
+```
+
+Now that our methods have access to the `dbInstance` we can execute our sql files by chaining on `.file_name`. For example, if I wanted to execute `read_product` I would use `dbInstance.read_product()`. Knowing this we can execute our sql files in every method. Chain a `.then` to use `res` to send status 200 and chain a `.catch` to use `res` to send status 500. The `getOne` and `getAll` method should also send `product` and `products` on success.
+
+</details>
 
 ### Solution
 
@@ -449,6 +485,8 @@ module.exports = {
   }
 };
 ```
+
+We'll worry about how to use parameters after we configure our routes. For right now, this is all we need to do.
 
 </details>
 
