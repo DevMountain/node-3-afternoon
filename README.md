@@ -8,7 +8,7 @@ In this project, we are going to make our first full CRUD back-end that uses a d
 
 ### Summary
 
-In this step. we are going to create a bare-bones server.
+In this step, we are going to create a bare-bones server.
 
 ### Instructions
 
@@ -36,7 +36,7 @@ const cors = require('cors');
 const massive = require('massive');
 ```
 
-Now that our `index.js` file has access to all our packages, let's create a basic server. We'll begin saving `express()` to a variable called `app`.
+Now that our `index.js` file has access to all our packages, let's create a basic server. We'll begin by saving `express()` to a variable called `app`.
 
 ```js
 const express = require('express');
@@ -60,7 +60,7 @@ app.use( bodyParser.json() );
 app.use( cors() );
 ```
 
-Finally, we'll want to tell the server to listen on port 3000 and use a `console.log` to tell us when it is listening.
+Finally, we'll want to tell the server to listen on port `3000` and use a `console.log` to tell us when it is listening.
 
 ```js
 const express = require('express');
@@ -122,6 +122,37 @@ In this step, we are going to add massive to the server so we can connect to a d
   * Create the `sanbox` database if it doesn't exist.
 * Use `massive` and the `connectionString` to establish a connection.
 * In the `.then` callback from `massive`, set `db` on app to equal the database instance.
+
+<details>
+
+<summary> Detailed Instructions </summary>
+
+<br />
+
+Now that we have basic node server ready to go, let's modify it to connect to a postgres database. Create a variable called `connectionString` that equals `postgres://username:password@localhost/sandbox`. `username` should equal your username and `password` should equal your password. If you don't have a password set on your computer, you can remove the `:password` from the connection string. 
+
+Using the `connectionString` we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
+
+```js
+const connectionString = "postgres://username:password@localhost/sandbox";
+massive( connectionString );
+```
+
+We'll want to execute some logic when the promise is fulfilled, so let's chain a `.then` to it. Be sure to capture the database instance in the first parameter.
+
+```js
+const connectionString = "postgres://username:password@localhost/sandbox";
+massive( connectionString ).then( dbInstance => {} );
+```
+
+Finally, now that we have the `dbInstance`, we can set it onto `app`. Let's have our function return `app.set('db', dbInstance)`.
+
+```js
+const connectionString = "postgres://username:password@localhost/sandbox";
+massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
+```
+
+</details>
 
 ### Solution
 
