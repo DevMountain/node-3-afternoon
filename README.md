@@ -200,20 +200,20 @@ In this step, we are going to create our table and the `.sql` files we'll need t
   * Create a `update_product.sql` file.
   * Create a `delete_product.sql` file.
 * `create_product.sql`:
-  * Should be able to add a new product to the `Products` table.
-  * Should have four parameters ( Name, Description, Price, ImageUrl ).
+  * The SQL should be able to add a new product to the `Products` table.
+  * The SQL should have four parameters ( Name, Description, Price, ImageUrl ).
 * `read_products.sql`:
-  * Should be able to return all products from the `Products` table.
+  * The SQL should be able to return all products from the `Products` table.
 * `read_product.sql`:
-  * Should be able to returna a specific product from the `Products` table.
-  * Should use a parameter to find the product whose `ProductID` matches.
+  * The SQL should be able to returna a specific product from the `Products` table.
+  * The SQL should use a parameter to find the product whose `ProductID` matches.
 * `update_product.sql`:
-  * Should be able to update the description of a specific product from the `Products` table.
-  * Should use a parameter to find the product whose `ProductID` matches.
-  * Should use a parameter to update the value of the `Description`.
+  * The SQL should be able to update the description of a specific product from the `Products` table.
+  * The SQL should use a parameter to find the product whose `ProductID` matches.
+  * The SQL should use a parameter to update the value of the `Description`.
 * `delete_product.sql`:
-  * Should be able to delete a specific product from the `Products` table.
-  * Should use a parameter to find the product whose `ProductID` matches.
+  * The SQL should be able to delete a specific product from the `Products` table.
+  * The SQL should use a parameter to find the product whose `ProductID` matches.
 
 <details>
 
@@ -389,7 +389,7 @@ In this step, we will create a `products_controller.js` file to will handle the 
 * Use `module.exports` to export an object with five methods.
   * `create`, `getOne`, `getAll`, `update`, and `delete`.
 * Inside of each method, access the database instance.
-* Inside of each method use the correct SQL file.
+* Inside of each method, use the correct SQL file.
   * `create` -> `create_product.sql`.
   * `getOne` -> `read_product.sql`.
   * `getAll` -> `read_products.sql`.
@@ -725,7 +725,7 @@ In this step, we'll test to make sure all the endpoint are working.
 ## Black Diamond
 
 * Create a React front end to interact with your app.
-* Use express static to serve up your React files from a build folder
+* Use express static to serve up your React files from a build folder.
 * Create a single view that can insert, read, update, and delete products.
 * Create a second view that just reads the products and displays them in a pretty way (like Jane.com or amazon).
 
