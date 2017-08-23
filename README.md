@@ -527,7 +527,7 @@ const massive = require('massive');
 const connectionString = "postgres://username:password@localhost/sandbox";
 const products_controller = require('./products_controller');
 
-const app = module.exports = express();
+const app = express();
 app.use( bodyParser.json() );
 app.use( cors() );
 massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
