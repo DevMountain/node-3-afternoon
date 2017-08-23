@@ -342,42 +342,7 @@ DELETE FROM Products WHERE ProductID = $1;
 
 </details>
 
-
 ## Step 4
-
-### Summary
-
-In this step, we will export our `app` so we can create a controller that will use the database instance.
-
-### Instructions
-
-* Use `module.exports` to export `app`.
-
-### Solution
-
-<details>
-
-<summary> <code> index.js </code> </summary>
-
-```js
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const massive = require('massive');
-const connectionString = "postgres://username:password@localhost/sandbox";
-
-const app = module.exports = express();
-app.use( bodyParser.json() );
-app.use( cors() );
-massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
-
-const port = 3000;
-app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
-```
-
-</details>
-
-## Step 5
 
 ### Summary
 
@@ -533,7 +498,7 @@ module.exports = {
 ```
 </details>
 
-## Step 6
+## Step 5
 
 ### Summary
 
@@ -580,7 +545,7 @@ app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 </details>
 
 
-## Step 7
+## Step 6
 
 ### Summary
 
@@ -708,7 +673,7 @@ module.exports = {
 
 </details>
 
-## Step 8
+## Step 7
 
 ### Summary
 
