@@ -35,6 +35,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
+require('dotenv').config()
 ```
 
 Now that our `index.js` file has access to all our packages, let's create a basic server. We'll begin by saving `express()` to a variable called `app`.
@@ -44,6 +45,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
+require('dotenv').config()
 
 const app = express();
 ```
@@ -55,6 +57,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
+require('dotenv').config()
 
 const app = express();
 app.use( bodyParser.json() );
@@ -68,6 +71,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
+require('dotenv').config()
 
 const app = express();
 app.use( bodyParser.json() );
@@ -101,6 +105,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
+require('dotenv').config()
 
 const app = express();
 app.use( bodyParser.json() );
@@ -168,6 +173,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
+require('dotenv').config()
 
 const app = express();
 app.use( bodyParser.json() );
@@ -194,7 +200,7 @@ In this step, we are going to create our table and the `.sql` files we'll need t
 
 ### Instructions
 
-* Create a `Products` table in the `sandbox` database.
+* Create a `Products` table in your Heroku database.
 * Create a folder called `db`.
   * Create a `create_product.sql` file.
   * Create a `read_products.sql` file.
@@ -526,6 +532,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
+require('dotenv').config()
 const products_controller = require('./products_controller');
 
 const app = express();
