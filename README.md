@@ -13,8 +13,9 @@ In this step, we are going to create a bare-bones server.
 ### Instructions
 
 * Run `npm init -y`.
-* Use npm to install and save `express`, `body-parser`, `cors`, and `massive`.
-* Create a `.gitignore` to ignore the `node_modules` folder.
+* Use npm to install and save `express`, `body-parser`, `cors`, `dotenv` and `massive`.
+* Create a `.env` file.
+* Create a `.gitignore` to ignore the `node_modules` folder and the `.env` file.
 * Create an `index.js` file.
 * Require all the packages that we installed and saved.
 * Get your server listening on port `3000`.
@@ -25,9 +26,9 @@ In this step, we are going to create a bare-bones server.
 
 <br />
 
-Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install --save express body-parser cors massive` to get all the packages we'll need for this project.
+Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install --save express body-parser cors massive dotenv` to get all the packages we'll need for this project.
 
-After that is finished, we can see it created a `node_modules` folder. We never want to include this folder on GitHub, so let's create a `.gitignore` that will ignore `node_modules`. After that, we're ready to start creating our server. Create an `index.js` file and `require` all the packages we install at the top.
+After that is finished, we can see it created a `node_modules` folder. We never want to include this folder on GitHub, so let's create a `.gitignore` that will ignore `node_modules`. Create a file and name it `.env`. This file also needs to be included in the `.gitignore`. After that, we're ready to start creating our server. Create an `index.js` file and `require` all the packages we install at the top.
 
 ```js
 const express = require('express');
@@ -72,7 +73,7 @@ const app = express();
 app.use( bodyParser.json() );
 app.use( cors() );
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -86,6 +87,7 @@ app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 
 ```
 node_modules
+.env
 ```
 
 </details>
@@ -104,7 +106,7 @@ const app = express();
 app.use( bodyParser.json() );
 app.use( cors() );
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -118,9 +120,9 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 ### Instructions
 
-* Create a `connectionString` variable that connects to the `sandbox` database. 
-  * Create the `sanbox` database if it doesn't exist.
-* Use `massive` and the `connectionString` to establish a connection.
+* Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database.
+  * Make sure to add `?ssl=true` at end of your connection string.
+* Use `massive` and the `CONNECTION_STRING` to establish a connection.
 * In the `.then` callback from `massive`, set `db` on app to equal the database instance.
 
 <details>
@@ -129,27 +131,28 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 <br />
 
-Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Create a variable called `connectionString` that equals `postgres://username:password@localhost/sandbox`. `username` should equal your username and `password` should equal your password. If you don't have a password set on your computer, you can remove the `:password` from the connection string. 
+Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database, it should look something like this `postgres://username:password@host/dbname?ssl=true`. 
 
-Using the `connectionString`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
+Using the `CONNECTION_STRING`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
+
+```
+CONNECTION_STRING=postgres://username:password@host/dbname?ssl=true
+```
 
 ```js
-const connectionString = "postgres://username:password@localhost/sandbox";
-massive( connectionString );
+massive( process.env.CONNECTION_STRING );
 ```
 
 We'll want to execute some logic when the promise is fulfilled, so let's chain a `.then` to it. Be sure to capture the database instance in the first parameter.
 
 ```js
-const connectionString = "postgres://username:password@localhost/sandbox";
-massive( connectionString ).then( dbInstance => {} );
+massive( process.env.CONNECTION_STRING ).then( dbInstance => {} );
 ```
 
 Finally, now that we have the `dbInstance`, we can set it onto `app`. Let's have our function return `app.set('db', dbInstance)`.
 
 ```js
-const connectionString = "postgres://username:password@localhost/sandbox";
-massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
+massive( process.env.CONNECTION_STRING ).then( dbInstance => app.set('db', dbInstance) );
 ```
 
 </details>
@@ -165,14 +168,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
-const connectionString = "postgres://username:password@localhost/sandbox";
 
 const app = express();
 app.use( bodyParser.json() );
 app.use( cors() );
-massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
+massive( process.env.CONNECTION_STRING ).then( dbInstance => app.set('db', dbInstance) );
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -524,13 +526,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const massive = require('massive');
-const connectionString = "postgres://username:password@localhost/sandbox";
 const products_controller = require('./products_controller');
 
 const app = express();
 app.use( bodyParser.json() );
 app.use( cors() );
-massive( connectionString ).then( dbInstance => app.set('db', dbInstance) );
+massive( process.env.CONNECTION_STRING ).then( dbInstance => app.set('db', dbInstance) );
 
 app.post( '/api/product', products_controller.create );
 app.get( '/api/products', products_controller.getAll );
@@ -538,7 +539,7 @@ app.get( '/api/product/:id', products_controller.getOne );
 app.put( '/api/product/:id', products_controller.update );
 app.delete( '/api/product/:id', products_controller.delete );
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
