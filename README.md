@@ -192,7 +192,7 @@ app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 
 In this step, we are going to create our table and the `.sql` files we'll need to preform operations on our data. The schema for our table will look like:
 
-* ID - Serial Primary Key
+* ProductID - Serial Primary Key
 * Name - varchar(40)
 * Description - varchar(80)
 * Price - integer
