@@ -136,7 +136,7 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 <br />
 
-Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database, it should look something like this `postgres://username:password@host/dbname?ssl=true`. 
+Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database, it should look something like this `postgres://username:password@host/dbname?ssl=true`.
 
 Using the `CONNECTION_STRING`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
 
@@ -243,10 +243,10 @@ CREATE TABLE Products (
 
 Now that we have a `Products` table, we'll make five `sql` files. One for `creating` products; one for `reading` all products; one for `reading` a specific product; one for `updating` products; and one for `deleting` products. Let's create a folder called `db`. This is where we'll store our `sql` files that we can execute later using the database instance.
 
-Inside the `db` folder, let's create a file called `create_product.sql`. This `sql` file will be responsible for creating a new product using four parameters. The four parameters are `Name`, `Description`, `Price`, and `ImageUrl`. To add something to a database we use the following syntax: `INSERT INTO Table ( column1, column2 ) VALUES ( value1, value2 );` The values we'll change are `Table`, `column`, and `value`. Since we want to insert into the `Products` table, we'll change `Table` to `Products`. Since we are updating the `Name`, `Description`, `Price`, and `ImageUrl`, we'll use those as the columns. And since we are using parameters for the values, we'll use `$1`, `$2`, `$3`, and `$4` as the values. The final syntax will look like:
+Inside the `db` folder, let's create a file called `create_product.sql`. This `sql` file will be responsible for creating a new product using four parameters. The four parameters are `Name`, `Description`, `Price`, and `ImageUrl`. To add something to a database we use the following syntax: `INSERT INTO Table ( column1, column2 ) VALUES ( value1, value2 );` The values we'll change are `Table`, `column`, and `value`. Since we want to insert into the `Products` table, we'll change `Table` to `Products`. Since we are updating the `Name`, `Description`, `Price`, and `ImageUrl`, we'll use those as the columns. And since we are using parameters for the values, we'll use `${name}`, `${description}`, `$price`, and `${imageurl}` as the values. The final syntax will look like:
 
 ```sql
-INSERT INTO Products ( Name, Description, Price, ImageUrl ) VALUES ( $1, $2, $3, $4 );
+INSERT INTO Products ( Name, Description, Price, ImageUrl ) VALUES ( ${name}, ${description}, $price, $imageurl );
 ```
 
 Now let's move on to `read_products.sql`. Create a file in the `db` folder called `read_products.sql`. This `sql` file will be responsible for reading all products from the database. To read all data from a database we use the following syntax: `SELECT * FROM Table`. Since we are working with the `Products` table, we'll change `Table` to `Products`. The final syntax will look like:
@@ -255,23 +255,23 @@ Now let's move on to `read_products.sql`. Create a file in the `db` folder calle
 SELECT * FROM Products;
 ```
 
-Now let's move on to `read_product.sql`. Create a file in the `db` folder called `read_product.sql`. This file will be very similar to `read_products.sql`, however we need to add a where statement so we don't get all the products. We'll want to use a parameter so we can dynamically select a product by `ProductID`. We can use a where statement with the following syntax: `WHERE column1 = value`. Since we are looking for a product by ID, we'll change `column1` to `ProductID`. And since we are using a parameter for the ID, we'll change `value` to `$1`. The final syntax will look like:
+Now let's move on to `read_product.sql`. Create a file in the `db` folder called `read_product.sql`. This file will be very similar to `read_products.sql`, however we need to add a where statement so we don't get all the products. We'll want to use a parameter so we can dynamically select a product by `ProductID`. We can use a where statement with the following syntax: `WHERE column1 = value`. Since we are looking for a product by ID, we'll change `column1` to `ProductID`. And since we are using a parameter for the ID, we'll change `value` to `${id}`. The final syntax will look like:
 
 ```sql
-SELECT * FROM Products WHERE ProductID = $1;
+SELECT * FROM Products WHERE ProductID = ${id};
 ```
 
-Now let's move on to `update_product.sql`. Create a file in the `db` folder called `update_product.sql`. This `sql` file will be responsible for updating the description of a product by ID. To update data from a database we use the following syntax: `UPDATE Table SET column1 = value1 WHERE condition`. Since we are working with the `Products` table we'll change `Table` to `Products`. Since we are updating the description dynamically we'll set `column1` to `Description` and `value1` to `$2`. And since we are updating products by ID we'll set `condition` to `ProductID = $1`. The order of `$1` and `$2` doesn't matter as long as you following the same order in the `controller` file. I personally prefer `(id, value)` instead of `(value, id)`. The final syntax will look like:
+Now let's move on to `update_product.sql`. Create a file in the `db` folder called `update_product.sql`. This `sql` file will be responsible for updating the description of a product by ID. To update data from a database we use the following syntax: `UPDATE Table SET column1 = value1 WHERE condition`. Since we are working with the `Products` table we'll change `Table` to `Products`. Since we are updating the description dynamically we'll set `column1` to `Description` and `value1` to `${description}`. And since we are updating products by ID we'll set `condition` to `ProductID = ${id}`.  The final syntax will look like:
 
 ```sql
-UPDATE Products SET Description = $2 WHERE ProductID = $1;
+UPDATE Products SET Description = ${description} WHERE ProductID = ${id};
 ```
 
-Now let's move on to `delete_product.sql`. Create a file in the `db` folder called `delete_product.sql`. This `sql` file will be responsible for deleting a specific product by ID. To delete data from a database we use the following syntax: `DELETE FROM Table WHERE condition`. Since we are working with the `Products` table, we'll change `Table` to `Products`. Since we are deleting by product ID, we'll change `condition` to `ProductID = $1`.
+Now let's move on to `delete_product.sql`. Create a file in the `db` folder called `delete_product.sql`. This `sql` file will be responsible for deleting a specific product by ID. To delete data from a database we use the following syntax: `DELETE FROM Table WHERE condition`. Since we are working with the `Products` table, we'll change `Table` to `Products`. Since we are deleting by product ID, we'll change `condition` to `ProductID = ${id}`.
 The final syntax will look like:
 
 ```sql
-DELETE FROM Products WHERE ProductID = $1;
+DELETE FROM Products WHERE ProductID = ${id};
 ```
 
 </details>
@@ -303,7 +303,7 @@ CREATE TABLE Products (
 <summary> <code> create_product.sql </code> </summary>
 
 ```sql
-INSERT INTO Products ( Name, Description, Price, ImageUrl ) VALUES ( $1, $2, $3, $4 );
+INSERT INTO Products ( Name, Description, Price, ImageUrl ) VALUES ( ${name}, ${description}, ${price}, ${imageurl} );
 ```
 
 </details>
@@ -323,7 +323,7 @@ SELECT * FROM Products;
 <summary> <code> read_product.sql </code> </summary>
 
 ```sql
-SELECT * FROM Products WHERE ProductID = $1;
+SELECT * FROM Products WHERE ProductID = ${id};
 ```
 
 </details>
@@ -333,7 +333,7 @@ SELECT * FROM Products WHERE ProductID = $1;
 <summary> <code> update_product.sql </code> </summary>
 
 ```sql
-UPDATE Products SET Description = $2 WHERE ProductID = $1;
+UPDATE Products SET Description = ${description} WHERE ProductID = ${id};
 ```
 
 </details>
@@ -343,7 +343,7 @@ UPDATE Products SET Description = $2 WHERE ProductID = $1;
 <summary> <code> delete_product.sql </code> </summary>
 
 ```sql
-DELETE FROM Products WHERE ProductID = $1;
+DELETE FROM Products WHERE ProductID = ${id};
 ```
 
 </details>
@@ -379,7 +379,7 @@ In this step, we will create a `products_controller.js` file to will handle the 
 
 <br />
 
-Now that we have all the `sql` files we'll need to interact with our database, let's create a controller that will execute the `sql`. Create a file called `products_controller.js`. In this file, use `module.exports` to export an `object` with five methods. All methods should capture `req`, `res`, and `next` and create a variable for the database instance off of `req.app`. 
+Now that we have all the `sql` files we'll need to interact with our database, let's create a controller that will execute the `sql`. Create a file called `products_controller.js`. In this file, use `module.exports` to export an `object` with five methods. All methods should capture `req`, `res`, and `next` and create a variable for the database instance off of `req.app`.
 
 ```js
 module.exports = {
@@ -573,7 +573,7 @@ In this step, we'll modify the controller to use parameters or the request body.
 
 <br />
 
-Now that we know how our routes are configured, we can update our controller to reflect those changes. We'll modify `update` to use `id` from the request parameters and the `desc` from the request query. We'll modify `getOne` to use `id` from the request parameters. We'll modify `delete` to use `id` from the request parameters. And we'll modify `create` to use `name`, `description`, `price` and `imageurl` from the request body. When adding parameters to sql, all you have to do is pass in an array as the first argument and then the element(s) in the array map to `$1`, `$2`, etc... For example: `dbInstance.create_product([ name, description, price, imageurl ])`, name is `$1`, description is `$2`, price is `$3`, and imageurl is `$4`.
+Now that we know how our routes are configured, we can update our controller to reflect those changes. We'll modify `update` to use `id` from the request parameters and the `desc` from the request query. We'll modify `getOne` to use `id` from the request parameters. We'll modify `delete` to use `id` from the request parameters. And we'll modify `create` to use `name`, `description`, `price` and `imageurl` from the request body. When adding parameters to sql, all you have to do is pass in an object as the first argument and then the key value pairs in the object map to the sql query with each key being wrapped with ${}. For example: `dbInstance.create_product({ name: name, description: description, price: price, imageurl: imageurl})`, name is `${name}`, description is `${description}`, price is `${price}`, and imageurl is `${imageurl}` in the sql query.
 
 ```js
 module.exports = {
@@ -581,16 +581,16 @@ module.exports = {
     const dbInstance = req.app.get('db');
     const { name, description, price, imageurl } = req.body;
 
-    dbInstance.create_product([ name, description, price, imageurl ])
+    dbInstance.create_product({ name, description, price, imageurl })
       .then( () => res.status(200).send() )
       .catch( () => res.status(500).send() );
   },
 
   getOne: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
-    const { params } = req; 
+    const { id } = req.params;
 
-    dbInstance.read_product([ params.id ])
+    dbInstance.read_product({ id })
       .then( product => res.status(200).send( product ) )
       .catch( () => res.status(500).send() );
   },
@@ -607,16 +607,16 @@ module.exports = {
     const dbInstance = req.app.get('db');
     const { params, query } = req;
 
-    dbInstance.update_product([ params.id, query.desc ])
+    dbInstance.update_product({ id: params.id, description: query.desc })
       .then( () => res.status(200).send() )
       .catch( () => res.status(500).send() );
   },
 
   delete: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
-    const { params } = req;
+    const { id } = req.params;
 
-    dbInstance.delete_product([ params.id ])
+    dbInstance.delete_product({ id })
       .then( () => res.status(200).send() )
       .catch( () => res.status(500).send() );
   }
@@ -637,16 +637,16 @@ module.exports = {
     const dbInstance = req.app.get('db');
     const { name, description, price, imageurl } = req.body;
 
-    dbInstance.create_product([ name, description, price, imageurl ])
+    dbInstance.create_product({ name, description, price, imageurl })
       .then( () => res.status(200).send() )
       .catch( () => res.status(500).send() );
   },
 
   getOne: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
-    const { params } = req; 
+    const { id } = req.params;
 
-    dbInstance.read_product([ params.id ])
+    dbInstance.read_product({ id })
       .then( product => res.status(200).send( product ) )
       .catch( () => res.status(500).send() );
   },
@@ -663,16 +663,16 @@ module.exports = {
     const dbInstance = req.app.get('db');
     const { params, query } = req;
 
-    dbInstance.update_product([ params.id, query.desc ])
+    dbInstance.update_product({ id: params.id, description: query.desc })
       .then( () => res.status(200).send() )
       .catch( () => res.status(500).send() );
   },
 
   delete: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
-    const { params } = req;
+    const { id } = req.params;
 
-    dbInstance.delete_product([ params.id ])
+    dbInstance.delete_product({ id })
       .then( () => res.status(200).send() )
       .catch( () => res.status(500).send() );
   }
