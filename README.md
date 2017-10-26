@@ -229,7 +229,7 @@ In this step, we are going to create our table and the `.sql` files we'll need t
 
 <br />
 
-Now that we a method of connecting to our database and have an instance ready to go on `app`, we are ready to start creating the `sql` files that will interact with our database and a `products` table. Let's begin by creating a `products` table that follows the schema in the summary. The final syntax will look like:
+Now that we have a method of connecting to our database and have an instance ready to go on `app`, we are ready to start creating the `sql` files that will interact with our database and a `products` table. Let's begin by creating a `products` table that follows the schema in the summary. The final syntax will look like:
 
 ```sql
 CREATE TABLE products (
@@ -354,7 +354,7 @@ DELETE FROM products WHERE product_id = $1;
 
 ### Summary
 
-In this step, we will create a `products_controller.js` file to will handle the logic of interacting with the database.
+In this step, we will create a `products_controller.js` file that will handle the logic of interacting with the database.
 
 ### Instructions
 
