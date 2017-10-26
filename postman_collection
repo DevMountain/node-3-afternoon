@@ -190,7 +190,7 @@
 			"data": [],
 			"dataMode": "raw",
 			"version": 2,
-			"tests": "const res = JSON.parse( responseBody );\nconst isArray = Array.isArray( res );\nconst resLength = res.length === 1;\nlet hasAllProps = true;\n\nfunction hasProp( prop ) {\n  if ( !res[0].hasOwnProperty( prop ) ) {\n    hasAllProps = false;\n  }\n}\n\nconst temp = [ 'name', 'description', 'price', 'imageurl' ];\ntemp.map( prop => hasProp( prop ) );\n\ntests[ 'API can read a specific product' ] = isArray && resLength && hasAllProps;",
+			"tests": "const res = JSON.parse( responseBody );\nconst isArray = Array.isArray( res );\nconst resLength = res.length === 1;\nlet hasAllProps = true;\n\nfunction hasProp( prop ) {\n  if ( !res[0].hasOwnProperty( prop ) ) {\n    hasAllProps = false;\n  }\n}\n\nconst temp = [ 'name', 'description', 'price', 'image_url' ];\ntemp.map( prop => hasProp( prop ) );\n\ntests[ 'API can read a specific product' ] = isArray && resLength && hasAllProps;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"time": 1498233856304,
