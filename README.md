@@ -118,7 +118,7 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 ### Instructions
 
-* Create a `connectionString` variable that connects to the `sandbox` database. 
+* Create a `connectionString` variable that connects to the `sandbox` database.
   * Create the `sanbox` database if it doesn't exist.
 * Use `massive` and the `connectionString` to establish a connection.
 * In the `.then` callback from `massive`, set `db` on app to equal the database instance.
@@ -129,7 +129,7 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 <br />
 
-Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Create a variable called `connectionString` that equals `postgres://username:password@localhost/sandbox`. `username` should equal your username and `password` should equal your password. If you don't have a password set on your computer, you can remove the `:password` from the connection string. 
+Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Create a variable called `connectionString` that equals `postgres://username:password@localhost/sandbox`. `username` should equal your username and `password` should equal your password. If you don't have a password set on your computer, you can remove the `:password` from the connection string.
 
 Using the `connectionString`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
 
@@ -184,15 +184,15 @@ app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 
 In this step, we are going to create our table and the `.sql` files we'll need to preform operations on our data. The schema for our table will look like:
 
-* ID - Serial Primary Key
-* Name - varchar(40)
-* Description - varchar(80)
-* Price - integer
+* product_id - Serial Primary Key
+* name - varchar(40)
+* description - varchar(80)
+* price - integer
 * Imageurl - text
 
 ### Instructions
 
-* Create a `Products` table in the `sandbox` database.
+* Create a `products` table in the `sandbox` database.
 * Create a folder called `db`.
   * Create a `create_product.sql` file.
   * Create a `read_products.sql` file.
@@ -200,20 +200,20 @@ In this step, we are going to create our table and the `.sql` files we'll need t
   * Create a `update_product.sql` file.
   * Create a `delete_product.sql` file.
 * `create_product.sql`:
-  * The SQL should be able to add a new product to the `Products` table.
-  * The SQL should have four parameters ( Name, Description, Price, ImageUrl ).
+  * The SQL should be able to add a new product to the `products` table.
+  * The SQL should have four parameters ( name, description, price, image_url ).
 * `read_products.sql`:
-  * The SQL should be able to return all products from the `Products` table.
+  * The SQL should be able to return all products from the `products` table.
 * `read_product.sql`:
-  * The SQL should be able to returna a specific product from the `Products` table.
-  * The SQL should use a parameter to find the product whose `ProductID` matches.
+  * The SQL should be able to returna a specific product from the `products` table.
+  * The SQL should use a parameter to find the product whose `product_id` matches.
 * `update_product.sql`:
-  * The SQL should be able to update the description of a specific product from the `Products` table.
-  * The SQL should use a parameter to find the product whose `ProductID` matches.
-  * The SQL should use a parameter to update the value of the `Description`.
+  * The SQL should be able to update the description of a specific product from the `products` table.
+  * The SQL should use a parameter to find the product whose `product_id` matches.
+  * The SQL should use a parameter to update the value of the `description`.
 * `delete_product.sql`:
-  * The SQL should be able to delete a specific product from the `Products` table.
-  * The SQL should use a parameter to find the product whose `ProductID` matches.
+  * The SQL should be able to delete a specific product from the `products` table.
+  * The SQL should use a parameter to find the product whose `product_id` matches.
 
 <details>
 
@@ -221,49 +221,49 @@ In this step, we are going to create our table and the `.sql` files we'll need t
 
 <br />
 
-Now that we a method of connecting to our database and have an instance ready to go on `app`, we are ready to start creating the `sql` files that will interact with our database and a `Products` table. Let's begin by creating a `Products` table that follows the schema in the summary. The final syntax will look like:
+Now that we a method of connecting to our database and have an instance ready to go on `app`, we are ready to start creating the `sql` files that will interact with our database and a `products` table. Let's begin by creating a `products` table that follows the schema in the summary. The final syntax will look like:
 
 ```sql
-CREATE TABLE Products (
-  ProductID SERIAL PRIMARY KEY NOT NULL,
-  Name varchar(40) NOT NULL,
-  Description varchar(80) NOT NULL,
-  Price integer NOT NULL,
-  ImageUrl text NOT NULL
+CREATE TABLE products (
+  product_id SERIAL PRIMARY KEY NOT NULL,
+  name varchar(40) NOT NULL,
+  description varchar(80) NOT NULL,
+  price integer NOT NULL,
+  image_url text NOT NULL
 );
 ```
 
-Now that we have a `Products` table, we'll make five `sql` files. One for `creating` products; one for `reading` all products; one for `reading` a specific product; one for `updating` products; and one for `deleting` products. Let's create a folder called `db`. This is where we'll store our `sql` files that we can execute later using the database instance.
+Now that we have a `products` table, we'll make five `sql` files. One for `creating` products; one for `reading` all products; one for `reading` a specific product; one for `updating` products; and one for `deleting` products. Let's create a folder called `db`. This is where we'll store our `sql` files that we can execute later using the database instance.
 
-Inside the `db` folder, let's create a file called `create_product.sql`. This `sql` file will be responsible for creating a new product using four parameters. The four parameters are `Name`, `Description`, `Price`, and `ImageUrl`. To add something to a database we use the following syntax: `INSERT INTO Table ( column1, column2 ) VALUES ( value1, value2 );` The values we'll change are `Table`, `column`, and `value`. Since we want to insert into the `Products` table, we'll change `Table` to `Products`. Since we are updating the `Name`, `Description`, `Price`, and `ImageUrl`, we'll use those as the columns. And since we are using parameters for the values, we'll use `$1`, `$2`, `$3`, and `$4` as the values. The final syntax will look like:
-
-```sql
-INSERT INTO Products ( Name, Description, Price, ImageUrl ) VALUES ( $1, $2, $3, $4 );
-```
-
-Now let's move on to `read_products.sql`. Create a file in the `db` folder called `read_products.sql`. This `sql` file will be responsible for reading all products from the database. To read all data from a database we use the following syntax: `SELECT * FROM Table`. Since we are working with the `Products` table, we'll change `Table` to `Products`. The final syntax will look like:
+Inside the `db` folder, let's create a file called `create_product.sql`. This `sql` file will be responsible for creating a new product using four parameters. The four parameters are `name`, `description`, `price`, and `image_url`. To add something to a database we use the following syntax: `INSERT INTO Table ( column1, column2 ) VALUES ( value1, value2 );` The values we'll change are `Table`, `column`, and `value`. Since we want to insert into the `products` table, we'll change `Table` to `products`. Since we are updating the `name`, `description`, `price`, and `image_url`, we'll use those as the columns. And since we are using parameters for the values, we'll use `$1`, `$2`, `$3`, and `$4` as the values. The final syntax will look like:
 
 ```sql
-SELECT * FROM Products;
+INSERT INTO products ( name, description, price, image_url ) VALUES ( $1, $2, $3, $4 );
 ```
 
-Now let's move on to `read_product.sql`. Create a file in the `db` folder called `read_product.sql`. This file will be very similar to `read_products.sql`, however we need to add a where statement so we don't get all the products. We'll want to use a parameter so we can dynamically select a product by `ProductID`. We can use a where statement with the following syntax: `WHERE column1 = value`. Since we are looking for a product by ID, we'll change `column1` to `ProductID`. And since we are using a parameter for the ID, we'll change `value` to `$1`. The final syntax will look like:
+Now let's move on to `read_products.sql`. Create a file in the `db` folder called `read_products.sql`. This `sql` file will be responsible for reading all products from the database. To read all data from a database we use the following syntax: `SELECT * FROM Table`. Since we are working with the `products` table, we'll change `Table` to `products`. The final syntax will look like:
 
 ```sql
-SELECT * FROM Products WHERE ProductID = $1;
+SELECT * FROM products;
 ```
 
-Now let's move on to `update_product.sql`. Create a file in the `db` folder called `update_product.sql`. This `sql` file will be responsible for updating the description of a product by ID. To update data from a database we use the following syntax: `UPDATE Table SET column1 = value1 WHERE condition`. Since we are working with the `Products` table we'll change `Table` to `Products`. Since we are updating the description dynamically we'll set `column1` to `Description` and `value1` to `$2`. And since we are updating products by ID we'll set `condition` to `ProductID = $1`. The order of `$1` and `$2` doesn't matter as long as you following the same order in the `controller` file. I personally prefer `(id, value)` instead of `(value, id)`. The final syntax will look like:
+Now let's move on to `read_product.sql`. Create a file in the `db` folder called `read_product.sql`. This file will be very similar to `read_products.sql`, however we need to add a where statement so we don't get all the products. We'll want to use a parameter so we can dynamically select a product by `product_id`. We can use a where statement with the following syntax: `WHERE column1 = value`. Since we are looking for a product by ID, we'll change `column1` to `product_id`. And since we are using a parameter for the ID, we'll change `value` to `$1`. The final syntax will look like:
 
 ```sql
-UPDATE Products SET Description = $2 WHERE ProductID = $1;
+SELECT * FROM products WHERE product_id = $1;
 ```
 
-Now let's move on to `delete_product.sql`. Create a file in the `db` folder called `delete_product.sql`. This `sql` file will be responsible for deleting a specific product by ID. To delete data from a database we use the following syntax: `DELETE FROM Table WHERE condition`. Since we are working with the `Products` table, we'll change `Table` to `Products`. Since we are deleting by product ID, we'll change `condition` to `ProductID = $1`.
+Now let's move on to `update_product.sql`. Create a file in the `db` folder called `update_product.sql`. This `sql` file will be responsible for updating the description of a product by ID. To update data from a database we use the following syntax: `UPDATE Table SET column1 = value1 WHERE condition`. Since we are working with the `products` table we'll change `Table` to `products`. Since we are updating the description dynamically we'll set `column1` to `description` and `value1` to `$2`. And since we are updating products by ID we'll set `condition` to `product_id = $1`. The order of `$1` and `$2` doesn't matter as long as you following the same order in the `controller` file. I personally prefer `(id, value)` instead of `(value, id)`. The final syntax will look like:
+
+```sql
+UPDATE products SET description = $2 WHERE product_id = $1;
+```
+
+Now let's move on to `delete_product.sql`. Create a file in the `db` folder called `delete_product.sql`. This `sql` file will be responsible for deleting a specific product by ID. To delete data from a database we use the following syntax: `DELETE FROM Table WHERE condition`. Since we are working with the `products` table, we'll change `Table` to `products`. Since we are deleting by product ID, we'll change `condition` to `product_id = $1`.
 The final syntax will look like:
 
 ```sql
-DELETE FROM Products WHERE ProductID = $1;
+DELETE FROM products WHERE product_id = $1;
 ```
 
 </details>
@@ -272,15 +272,15 @@ DELETE FROM Products WHERE ProductID = $1;
 
 <details>
 
-<summary> <code> CREATE TABLE Products </code> </summary>
+<summary> <code> CREATE TABLE products </code> </summary>
 
 ```sql
-CREATE TABLE Products (
-  ProductID SERIAL PRIMARY KEY NOT NULL,
-  Name varchar(40) NOT NULL,
-  Description varchar(80) NOT NULL,
-  Price integer NOT NULL,
-  ImageUrl text NOT NULL
+CREATE TABLE products (
+  product_id SERIAL PRIMARY KEY NOT NULL,
+  name varchar(40) NOT NULL,
+  description varchar(80) NOT NULL,
+  price integer NOT NULL,
+  image_url text NOT NULL
 );
 ```
 
@@ -295,7 +295,7 @@ CREATE TABLE Products (
 <summary> <code> create_product.sql </code> </summary>
 
 ```sql
-INSERT INTO Products ( Name, Description, Price, ImageUrl ) VALUES ( $1, $2, $3, $4 );
+INSERT INTO products ( name, description, price, image_url ) VALUES ( $1, $2, $3, $4 );
 ```
 
 </details>
@@ -305,7 +305,7 @@ INSERT INTO Products ( Name, Description, Price, ImageUrl ) VALUES ( $1, $2, $3,
 <summary> <code> read_products.sql </code> </summary>
 
 ```sql
-SELECT * FROM Products;
+SELECT * FROM products;
 ```
 
 </details>
@@ -315,7 +315,7 @@ SELECT * FROM Products;
 <summary> <code> read_product.sql </code> </summary>
 
 ```sql
-SELECT * FROM Products WHERE ProductID = $1;
+SELECT * FROM products WHERE product_id = $1;
 ```
 
 </details>
@@ -325,7 +325,7 @@ SELECT * FROM Products WHERE ProductID = $1;
 <summary> <code> update_product.sql </code> </summary>
 
 ```sql
-UPDATE Products SET Description = $2 WHERE ProductID = $1;
+UPDATE products SET description = $2 WHERE product_id = $1;
 ```
 
 </details>
@@ -335,7 +335,7 @@ UPDATE Products SET Description = $2 WHERE ProductID = $1;
 <summary> <code> delete_product.sql </code> </summary>
 
 ```sql
-DELETE FROM Products WHERE ProductID = $1;
+DELETE FROM products WHERE product_id = $1;
 ```
 
 </details>
@@ -406,7 +406,7 @@ In this step, we will create a `products_controller.js` file to will handle the 
 
 <br />
 
-Now that we have all the `sql` files we'll need to interact with our database, let's create a controller that will execute the `sql`. Create a file called `products_controller.js`. In this file, use `module.exports` to export an `object` with five methods. All methods should capture `req`, `res`, and `next` and create a variable for the database instance off of `req.app`. 
+Now that we have all the `sql` files we'll need to interact with our database, let's create a controller that will execute the `sql`. Create a file called `products_controller.js`. In this file, use `module.exports` to export an `object` with five methods. All methods should capture `req`, `res`, and `next` and create a variable for the database instance off of `req.app`.
 
 ```js
 module.exports = {
@@ -615,7 +615,7 @@ module.exports = {
 
   getOne: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
-    const { params } = req; 
+    const { params } = req;
 
     dbInstance.read_product([ params.id ])
       .then( product => res.status(200).send( product ) )
@@ -671,7 +671,7 @@ module.exports = {
 
   getOne: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
-    const { params } = req; 
+    const { params } = req;
 
     dbInstance.read_product([ params.id ])
       .then( product => res.status(200).send( product ) )
