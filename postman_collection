@@ -31,7 +31,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:3000/api/product/{{productID_0}}",
+			"url": "http://localhost:3000/api/product/{{product_id_0}}",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -61,7 +61,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:3000/api/product/{{productID_0}}",
+			"url": "http://localhost:3000/api/product/{{product_id_0}}",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -160,7 +160,7 @@
 			"data": [],
 			"dataMode": "raw",
 			"version": 2,
-			"tests": "const res = JSON.parse( responseBody );\nconst isArray = Array.isArray( res );\n\nlet products = {\n  product0: null,\n  product1: null,\n  product2: null\n};\n\nvar counter = 0;\n\nfunction findProduct( x ) {\n  let product = products[`product${x}`] = res.find( product => (\n    product.name === `name ${x}` &&\n    product.description === `description ${x}` &&\n    product.price === x &&\n    product.imageurl === `imageurl ${x}`\n  ));\n  \n  if ( product ) {\n    postman.setGlobalVariable(`productID_${counter}`, product.productid);\n    counter++;\n  }\n}\n\nif ( isArray ) {\n  postman.setGlobalVariable(`data_length`, res.length);\n  let temp = [ 0, 1, 2 ];\n  temp.map( x => findProduct(x) );\n}\n\n\ntests[ 'API can create and read products' ] = isArray && products.product0 && products.product1 && products.product2;\n",
+			"tests": "const res = JSON.parse( responseBody );\nconst isArray = Array.isArray( res );\n\nlet products = {\n  product0: null,\n  product1: null,\n  product2: null\n};\n\nvar counter = 0;\n\nfunction findProduct( x ) {\n  let product = products[`product${x}`] = res.find( product => (\n    product.name === `name ${x}` &&\n    product.description === `description ${x}` &&\n    product.price === x &&\n    product.imageurl === `imageurl ${x}`\n  ));\n  \n  if ( product ) {\n    postman.setGlobalVariable(`product_id_${counter}`, product.productid);\n    counter++;\n  }\n}\n\nif ( isArray ) {\n  postman.setGlobalVariable(`data_length`, res.length);\n  let temp = [ 0, 1, 2 ];\n  temp.map( x => findProduct(x) );\n}\n\n\ntests[ 'API can create and read products' ] = isArray && products.product0 && products.product1 && products.product2;\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"time": 1498233910794,
@@ -181,7 +181,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:3000/api/product/{{productID_0}}",
+			"url": "http://localhost:3000/api/product/{{product_id_0}}",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -241,7 +241,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:3000/api/product/{{productID_0}}?desc=updated",
+			"url": "http://localhost:3000/api/product/{{product_id_0}}?desc=updated",
 			"queryParams": [
 				{
 					"key": "desc",
@@ -279,7 +279,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:3000/api/product/{{productID_2}}",
+			"url": "http://localhost:3000/api/product/{{product_id_2}}",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -339,7 +339,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:3000/api/product/{{productID_1}}",
+			"url": "http://localhost:3000/api/product/{{product_id_1}}",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
