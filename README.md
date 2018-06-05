@@ -419,7 +419,7 @@ module.exports = {
     dbInstance.create_product()
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -430,7 +430,7 @@ module.exports = {
     dbInstance.read_product()
       .then( product => res.status(200).send( product ) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -441,7 +441,7 @@ module.exports = {
     dbInstance.read_products()
       .then( products => res.status(200).send( products ) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -452,7 +452,7 @@ module.exports = {
     dbInstance.update_product()
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -463,7 +463,7 @@ module.exports = {
     dbInstance.delete_product()
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   }
@@ -488,7 +488,7 @@ module.exports = {
     dbInstance.create_product()
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -499,7 +499,7 @@ module.exports = {
     dbInstance.read_product()
       .then( product => res.status(200).send( product ) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -510,7 +510,7 @@ module.exports = {
     dbInstance.read_products()
       .then( products => res.status(200).send( products ) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -521,7 +521,7 @@ module.exports = {
     dbInstance.update_product()
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -532,7 +532,7 @@ module.exports = {
     dbInstance.delete_product()
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   }
@@ -619,7 +619,7 @@ module.exports = {
     dbInstance.create_product([ name, description, price, imageurl ])
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -631,7 +631,7 @@ module.exports = {
     dbInstance.read_product( params.id )
       .then( product => res.status(200).send( product ) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -642,7 +642,7 @@ module.exports = {
     dbInstance.read_products()
       .then( products => res.status(200).send( products ) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -654,7 +654,7 @@ module.exports = {
     dbInstance.update_product([ params.id, query.desc ])
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -666,7 +666,7 @@ module.exports = {
     dbInstance.delete_product( params.id )
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   }
@@ -690,7 +690,7 @@ module.exports = {
     dbInstance.create_product([ name, description, price, imageurl ])
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -702,7 +702,7 @@ module.exports = {
     dbInstance.read_product([ params.id ])
       .then( product => res.status(200).send( product ) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -713,7 +713,7 @@ module.exports = {
     dbInstance.read_products()
       .then( products => res.status(200).send( products ) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -725,7 +725,7 @@ module.exports = {
     dbInstance.update_product([ params.id, query.desc ])
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   },
@@ -737,7 +737,7 @@ module.exports = {
     dbInstance.delete_product([ params.id ])
       .then( () => res.sendStatus(200) )
       .catch( err => {
-        res.status(500).send("Oops! Something went wrong. Our engineers have been informed!");
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
         console.log(err)
       } );
   }
