@@ -13,12 +13,12 @@ In this step, we are going to create a bare-bones server.
 ### Instructions
 
 * Run `npm init -y`.
-* Use npm to install and save `express`, `body-parser`, `cors`, `dotenv` and `massive`.
+* Use npm to install and save `express`, `body-parser`, `dotenv` and `massive`.
 * Create a `.env` file.
 * Create a `.gitignore` to ignore the `node_modules` folder and the `.env` file.
 * Create an `index.js` file.
 * Require all the packages that we installed and saved.
-* Get your server listening on port `3000`.
+* Get your server listening on port `3005`.
 
 <details>
 
@@ -26,14 +26,13 @@ In this step, we are going to create a bare-bones server.
 
 <br />
 
-Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install --save express body-parser cors massive dotenv` to get all the packages we'll need for this project.
+Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install --save express body-parser massive dotenv` to get all the packages we'll need for this project.
 
 After that is finished, we can see it created a `node_modules` folder. We never want to include this folder on GitHub, so let's create a `.gitignore` that will ignore `node_modules`. Create a file and name it `.env`. This file also needs to be included in the `.gitignore`. After that, we're ready to start creating our server. Create an `index.js` file and `require` all the packages we install at the top.
 
 ```js
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const massive = require('massive');
 require('dotenv').config()
 ```
@@ -43,25 +42,22 @@ Now that our `index.js` file has access to all our packages, let's create a basi
 ```js
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const massive = require('massive');
 require('dotenv').config()
 
 const app = express();
 ```
 
-Then, we'll want to use our `bodyParser` and `cors` middleware.
+Then, we'll want to use our `bodyParser` middleware.
 
 ```js
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const massive = require('massive');
 require('dotenv').config()
 
 const app = express();
 app.use( bodyParser.json() );
-app.use( cors() );
 ```
 
 Finally, we'll want to tell the server to listen on port `3000` and use a `console.log` to tell us when it is listening.
@@ -69,15 +65,13 @@ Finally, we'll want to tell the server to listen on port `3000` and use a `conso
 ```js
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const massive = require('massive');
 require('dotenv').config()
 
 const app = express();
 app.use( bodyParser.json() );
-app.use( cors() );
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -103,15 +97,13 @@ node_modules
 ```js
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const massive = require('massive');
 require('dotenv').config()
 
 const app = express();
 app.use( bodyParser.json() );
-app.use( cors() );
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -129,6 +121,8 @@ In this step, we are going to add massive to the server so we can connect to a d
   * Make sure to add `?ssl=true` at end of your connection string.
 * Use `massive` and the `CONNECTION_STRING` to establish a connection.
 * In the `.then` callback from `massive`, set `db` on app to equal the database instance.
+* Make sure to add a `.catch()` with a callback function. 
+* In the callback of the `.catch`, `console.log` the error that would be received if the request was rejected.
 
 <details>
 
@@ -154,10 +148,20 @@ We'll want to execute some logic when the promise is fulfilled, so let's chain a
 massive( process.env.CONNECTION_STRING ).then( dbInstance => {} );
 ```
 
-Finally, now that we have the `dbInstance`, we can set it onto `app`. Let's have our function return `app.set('db', dbInstance)`.
+Now that we have the `dbInstance`, we can set it onto `app`. Let's have our function return `app.set('db', dbInstance)`.
 
 ```js
-massive( process.env.CONNECTION_STRING ).then( dbInstance => app.set('db', dbInstance) );
+massive( process.env.CONNECTION_STRING ).then( dbInstance => {
+  app.set('db', dbInstance)
+});
+```
+
+Finally, we need to add a `.catch` so that we can `console.log` any error we might receive. Do so by chaining `.catch` after the `.then`. The `.catch` takes a callback function. Name the callback function parameter `err`. If `.catch` is invoked, `err` will be the error that was received. Add a `console.log` to log the error.
+
+```js
+massive( process.env.CONNECTION_STRING ).then( dbInstance => {
+  app.set('db', dbInstance)
+}).catch( err => console.log(err) );
 ```
 
 </details>
@@ -171,16 +175,16 @@ massive( process.env.CONNECTION_STRING ).then( dbInstance => app.set('db', dbIns
 ```js
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const massive = require('massive');
 require('dotenv').config()
 
 const app = express();
 app.use( bodyParser.json() );
-app.use( cors() );
-massive( process.env.CONNECTION_STRING ).then( dbInstance => app.set('db', dbInstance) );
+massive( process.env.CONNECTION_STRING ).then( dbInstance => {
+  app.set('db', dbInstance)
+}).catch( err => console.log(err) );
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -369,9 +373,9 @@ In this step, we will create a `products_controller.js` file to will handle the 
   * `update` -> `update_product.sql`.
   * `delete` -> `delete_product.sql`.
 * Don't worry about the parameter(s) in this step.
-* `create`, `update`, and `delete` should send status 200 on success and status 500 on failure.
-* `getOne` should send status 200 and the product on success and status 500 on failure.
-* `getAll` should send status 200 and the products on success and status 500 on failure.
+* `create`, `update`, and `delete` should send status 200 on success and status 500 on failure with a message about how something went wrong.
+* `getOne` should send status 200 and the product on success and status 500 on failure with a message about how something went wrong (you can chose your own phrasing). Make sure to log the error to your console so you can read it if anything goes wrong.
+* `getAll` should send status 200 and the products on success and status 500 on failure with a message about how something went wrong (you can chose your own phrasing). Make sure to log the error to your console so you can read it if anything goes wrong.
 
 <details>
 
@@ -405,7 +409,7 @@ module.exports = {
 };
 ```
 
-Now that our methods have access to the `dbInstance` we can execute our sql files by chaining on `.file_name`. For example, if I wanted to execute `read_product` I would use `dbInstance.read_product()`. Knowing this we can execute our sql files in every method. Chain a `.then` to use `res` to send status 200 and chain a `.catch` to use `res` to send status 500. The `getOne` and `getAll` method should also send `product` and `products` on success.
+Now that our methods have access to the `dbInstance` we can execute our sql files by chaining on `.file_name`. For example, if I wanted to execute `read_product` I would use `dbInstance.read_product()`. Knowing this we can execute our sql files in every method. Chain a `.then` to use `res` to `sendStatus` 200 and chain a `.catch` to use `res` to send status 500 with a message about how something went wrong (you can chose your own phrasing). Make sure to log the error to your console so you can read it if anything goes wrong. The `getOne` and `getAll` method should send `product` and `products` on success.
 
 ```js
 module.exports = {
@@ -413,8 +417,11 @@ module.exports = {
     const dbInstance = req.app.get('db');
 
     dbInstance.create_product()
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   getOne: ( req, res, next ) => {
@@ -422,7 +429,10 @@ module.exports = {
 
     dbInstance.read_product()
       .then( product => res.status(200).send( product ) )
-      .catch( () => res.status(500).send() );
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   getAll: ( req, res, next ) => {
@@ -430,23 +440,32 @@ module.exports = {
 
     dbInstance.read_products()
       .then( products => res.status(200).send( products ) )
-      .catch( () => res.status(500).send() );
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   update: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
 
     dbInstance.update_product()
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   delete: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
 
     dbInstance.delete_product()
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   }
 };
 ```
@@ -467,8 +486,11 @@ module.exports = {
     const dbInstance = req.app.get('db');
 
     dbInstance.create_product()
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   getOne: ( req, res, next ) => {
@@ -476,7 +498,10 @@ module.exports = {
 
     dbInstance.read_product()
       .then( product => res.status(200).send( product ) )
-      .catch( () => res.status(500).send() );
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   getAll: ( req, res, next ) => {
@@ -484,23 +509,32 @@ module.exports = {
 
     dbInstance.read_products()
       .then( products => res.status(200).send( products ) )
-      .catch( () => res.status(500).send() );
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   update: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
 
     dbInstance.update_product()
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   delete: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
 
     dbInstance.delete_product()
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   }
 };
 ```
@@ -530,15 +564,15 @@ In this step, we will create endpoints that will call the methods on our control
 ```js
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const massive = require('massive');
 require('dotenv').config()
 const products_controller = require('./products_controller');
 
 const app = express();
 app.use( bodyParser.json() );
-app.use( cors() );
-massive( process.env.CONNECTION_STRING ).then( dbInstance => app.set('db', dbInstance) );
+massive( process.env.CONNECTION_STRING ).then( dbInstance => {
+  app.set('db', dbInstance)
+}).catch( err => console.log(err) );
 
 app.post( '/api/product', products_controller.create );
 app.get( '/api/products', products_controller.getAll );
@@ -546,7 +580,7 @@ app.get( '/api/product/:id', products_controller.getOne );
 app.put( '/api/product/:id', products_controller.update );
 app.delete( '/api/product/:id', products_controller.delete );
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -566,6 +600,7 @@ In this step, we'll modify the controller to use parameters or the request body.
 * Modify `getOne` to use `id` from `req.params`.
 * Modify `delete` to use `id` from `req.params`.
 * Modify the `create` to use `name`, `description`, `price`, and `imageurl` from the request body.
+* Something to remember, you do not need to use an array if you have only one argument to pass to the massive method. 
 
 <details>
 
@@ -573,7 +608,7 @@ In this step, we'll modify the controller to use parameters or the request body.
 
 <br />
 
-Now that we know how our routes are configured, we can update our controller to reflect those changes. We'll modify `update` to use `id` from the request parameters and the `desc` from the request query. We'll modify `getOne` to use `id` from the request parameters. We'll modify `delete` to use `id` from the request parameters. And we'll modify `create` to use `name`, `description`, `price` and `imageurl` from the request body. When adding parameters to sql, all you have to do is pass in an array as the first argument and then the element(s) in the array map to `$1`, `$2`, etc... For example: `dbInstance.create_product([ name, description, price, imageurl ])`, name is `$1`, description is `$2`, price is `$3`, and imageurl is `$4`.
+Now that we know how our routes are configured, we can update our controller to reflect those changes. We'll modify `update` to use `id` from the request parameters and the `desc` from the request query. We'll modify `getOne` to use `id` from the request parameters. We'll modify `delete` to use `id` from the request parameters. And we'll modify `create` to use `name`, `description`, `price` and `imageurl` from the request body. When adding parameters to sql, all you have to do is pass in an array as the first argument and then the element(s) in the array map to `$1`, `$2`, etc... For example: `dbInstance.create_product([ name, description, price, imageurl ])`, name is `$1`, description is `$2`, price is `$3`, and imageurl is `$4`. Remember, if you have only one argument, you do not need to pass it in an array.
 
 ```js
 module.exports = {
@@ -582,17 +617,23 @@ module.exports = {
     const { name, description, price, imageurl } = req.body;
 
     dbInstance.create_product([ name, description, price, imageurl ])
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   getOne: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
     const { params } = req;
 
-    dbInstance.read_product([ params.id ])
+    dbInstance.read_product( params.id )
       .then( product => res.status(200).send( product ) )
-      .catch( () => res.status(500).send() );
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   getAll: ( req, res, next ) => {
@@ -600,7 +641,10 @@ module.exports = {
 
     dbInstance.read_products()
       .then( products => res.status(200).send( products ) )
-      .catch( () => res.status(500).send() );
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   update: ( req, res, next ) => {
@@ -608,17 +652,23 @@ module.exports = {
     const { params, query } = req;
 
     dbInstance.update_product([ params.id, query.desc ])
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   delete: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
     const { params } = req;
 
-    dbInstance.delete_product([ params.id ])
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+    dbInstance.delete_product( params.id )
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   }
 };
 ```
@@ -638,8 +688,11 @@ module.exports = {
     const { name, description, price, imageurl } = req.body;
 
     dbInstance.create_product([ name, description, price, imageurl ])
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   getOne: ( req, res, next ) => {
@@ -648,7 +701,10 @@ module.exports = {
 
     dbInstance.read_product([ params.id ])
       .then( product => res.status(200).send( product ) )
-      .catch( () => res.status(500).send() );
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   getAll: ( req, res, next ) => {
@@ -656,7 +712,10 @@ module.exports = {
 
     dbInstance.read_products()
       .then( products => res.status(200).send( products ) )
-      .catch( () => res.status(500).send() );
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   update: ( req, res, next ) => {
@@ -664,8 +723,11 @@ module.exports = {
     const { params, query } = req;
 
     dbInstance.update_product([ params.id, query.desc ])
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   },
 
   delete: ( req, res, next ) => {
@@ -673,8 +735,11 @@ module.exports = {
     const { params } = req;
 
     dbInstance.delete_product([ params.id ])
-      .then( () => res.status(200).send() )
-      .catch( () => res.status(500).send() );
+      .then( () => res.sendStatus(200) )
+      .catch( err => {
+        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+        console.log(err)
+      } );
   }
 };
 ```
