@@ -18,7 +18,7 @@ In this step, we are going to create a bare-bones server.
 * Create a `.gitignore` to ignore the `node_modules` folder and the `.env` file.
 * Create an `index.js` file.
 * Require all the packages that we installed and saved.
-* Get your server listening on port `3005`.
+* Get your server listening on port `3000`.
 
 <details>
 
@@ -71,7 +71,7 @@ require('dotenv').config()
 const app = express();
 app.use( bodyParser.json() );
 
-const port = process.env.PORT || 3005;
+const port = process.env.PORT || 3000;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -103,7 +103,7 @@ require('dotenv').config()
 const app = express();
 app.use( bodyParser.json() );
 
-const port = process.env.PORT || 3005;
+const port = process.env.PORT || 3000;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -119,6 +119,7 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 * Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database.
   * Make sure to add `?ssl=true` at end of your connection string.
+* Also add a port value to the `.env` with the value being 3000.
 * Use `massive` and the `CONNECTION_STRING` to establish a connection.
 * In the `.then` callback from `massive`, set `db` on app to equal the database instance.
 * Make sure to add a `.catch()` with a callback function. 
@@ -184,7 +185,7 @@ massive( process.env.CONNECTION_STRING ).then( dbInstance => {
   app.set('db', dbInstance)
 }).catch( err => console.log(err) );
 
-const port = process.env.PORT || 3005;
+const port = process.env.PORT || 3000;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
@@ -580,7 +581,7 @@ app.get( '/api/product/:id', products_controller.getOne );
 app.put( '/api/product/:id', products_controller.update );
 app.delete( '/api/product/:id', products_controller.delete );
 
-const port = process.env.PORT || 3005;
+const port = process.env.PORT || 3000;
 app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
 ```
 
