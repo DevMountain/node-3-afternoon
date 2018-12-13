@@ -318,7 +318,7 @@ INSERT INTO product ( name, description, price, image_url ) VALUES ( $1, $2, $3,
 <summary> <code> read_products.sql </code> </summary>
 
 ```sql
-SELECT * FROM products;
+SELECT * FROM product;
 ```
 
 </details>
