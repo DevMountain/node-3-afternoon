@@ -26,24 +26,26 @@ In this step, we are going to create a bare-bones server.
 
 <br />
 
-Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install --save express body-parser massive dotenv` to get all the packages we'll need for this project.
+Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install ` to install and save packages to it. Run `npm install express body-parser massive dotenv` to get all the packages we'll need for this project.
 
 After that is finished, we can see it created a `node_modules` folder. We never want to include this folder on GitHub, so let's create a `.gitignore` that will ignore `node_modules`. Create a file and name it `.env`. This file also needs to be included in the `.gitignore`. After that, we're ready to start creating our server. Create an `index.js` file and `require` all the packages we install at the top.
 
+Be sure to `require` the dotenv package at the very top. We do this for best practice.
+
 ```js
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const massive = require('massive');
-require('dotenv').config()
 ```
 
 Now that our `index.js` file has access to all our packages, let's create a basic server. We'll begin by saving `express()` to a variable called `app`.
 
 ```js
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const massive = require('massive');
-require('dotenv').config()
 
 const app = express();
 ```
@@ -51,28 +53,30 @@ const app = express();
 Then, we'll want to use our `bodyParser` middleware.
 
 ```js
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const massive = require('massive');
-require('dotenv').config()
 
 const app = express();
 app.use( bodyParser.json() );
 ```
 
-Finally, we'll want to tell the server to listen on port `3000` and use a `console.log` to tell us when it is listening.
+Finally, we'll want to tell the server to listen on port `3000` and use a `console.log` to tell us when it is listening. Open the .env file and create a variable called SERVER_PORT that equals 3000. We can destructure SERVER_PORT from process.env to make our code look nicer.
 
 ```js
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const massive = require('massive');
-require('dotenv').config()
+const { SERVER_PORT } = process.env
 
 const app = express();
 app.use( bodyParser.json() );
 
-const port = process.env.PORT || 3000;
-app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+app.listen( SERVER_PORT, () => { 
+  console.log(`Server listening on port ${SERVER_PORT}.`); 
+});
 ```
 
 </details>
@@ -95,16 +99,28 @@ node_modules
 <summary> <code> index.js </code> </summary>
 
 ```js
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const massive = require('massive');
-require('dotenv').config()
+const {SERVER_PORT} = process.env
 
 const app = express();
 app.use( bodyParser.json() );
 
-const port = process.env.PORT || 3000;
-app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+
+app.listen( SERVER_PORT, () => { 
+  console.log(`Server listening on port ${SERVER_PORT}.`); 
+});
+```
+
+</details>
+
+<details>
+<summary> <code>.env</code> </summary>
+
+```
+SERVER_PORT=3000
 ```
 
 </details>
@@ -119,7 +135,6 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 * Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database.
   * Make sure to add `?ssl=true` at end of your connection string.
-* Also add a port value to the `.env` with the value being 3000.
 * Use `massive` and the `CONNECTION_STRING` to establish a connection.
 * In the `.then` callback from `massive`, set `db` on app to equal the database instance.
 * Make sure to add a `.catch()` with a callback function. 
@@ -133,6 +148,8 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database, it should look something like this `postgres://username:password@host/dbname?ssl=true`.
 
+Dont forget that we can destructure CONNECTION_STRING from process.env just like we did with SERVER_PORT
+
 Using the `CONNECTION_STRING`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
 
 ```
@@ -140,19 +157,19 @@ CONNECTION_STRING=postgres://username:password@host/dbname?ssl=true
 ```
 
 ```js
-massive( process.env.CONNECTION_STRING );
+massive( CONNECTION_STRING );
 ```
 
 We'll want to execute some logic when the promise is fulfilled, so let's chain a `.then` to it. Be sure to capture the database instance in the first parameter.
 
 ```js
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {} );
+massive( CONNECTION_STRING ).then( dbInstance => {} );
 ```
 
 Now that we have the `dbInstance`, we can set it onto `app`. Let's have our function return `app.set('db', dbInstance)`.
 
 ```js
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {
+massive(CONNECTION_STRING ).then( dbInstance => {
   app.set('db', dbInstance)
 });
 ```
@@ -160,7 +177,7 @@ massive( process.env.CONNECTION_STRING ).then( dbInstance => {
 Finally, we need to add a `.catch` so that we can `console.log` any error we might receive. Do so by chaining `.catch` after the `.then`. The `.catch` takes a callback function. Name the callback function parameter `err`. If `.catch` is invoked, `err` will be the error that was received. Add a `console.log` to log the error.
 
 ```js
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {
+massive( CONNECTION_STRING ).then( dbInstance => {
   app.set('db', dbInstance)
 }).catch( err => console.log(err) );
 ```
@@ -174,19 +191,22 @@ massive( process.env.CONNECTION_STRING ).then( dbInstance => {
 <summary> <code> index.js </code> </summary>
 
 ```js
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const massive = require('massive');
-require('dotenv').config()
+const { SERVER_PORT, CONNECTION_STRING } = process.env
 
 const app = express();
 app.use( bodyParser.json() );
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {
+massive( CONNECTION_STRING ).then( dbInstance => {
   app.set('db', dbInstance)
 }).catch( err => console.log(err) );
 
-const port = process.env.PORT || 3000;
-app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+
+app.listen( SERVER_PORT, () => { 
+  console.log(`Server listening on port ${SERVER_PORT}.`); 
+});
 ```
 
 </details>
@@ -563,15 +583,16 @@ In this step, we will create endpoints that will call the methods on our control
 <summary> <code> index.js </code> </summary>
 
 ```js
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const massive = require('massive');
-require('dotenv').config()
+const { SERVER_PORT, CONNECTION_STRING } = process.env
 const products_controller = require('./products_controller');
 
 const app = express();
 app.use( bodyParser.json() );
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {
+massive( CONNECTION_STRING ).then( dbInstance => {
   app.set('db', dbInstance)
 }).catch( err => console.log(err) );
 
@@ -581,8 +602,9 @@ app.get( '/api/products/:id', products_controller.getOne );
 app.put( '/api/products/:id', products_controller.update );
 app.delete( '/api/products/:id', products_controller.delete );
 
-const port = process.env.PORT || 3000;
-app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+app.listen( SERVER_PORT, () => { 
+  console.log(`Server listening on port ${SERVER_PORT}.`); 
+});
 ```
 
 </details>
