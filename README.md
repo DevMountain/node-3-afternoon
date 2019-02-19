@@ -150,6 +150,10 @@ Now that we have a basic node server ready to go, let's modify it to connect to 
 
 Don't forget that we can destructure CONNECTION_STRING from process.env just like we did with SERVER_PORT.
 
+```
+const {CONNECTION_STRING} = process.env
+```
+
 Using the `CONNECTION_STRING`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
 
 ```
