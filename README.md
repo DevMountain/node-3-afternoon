@@ -62,7 +62,7 @@ const app = express();
 app.use( bodyParser.json() );
 ```
 
-Finally, we'll want to tell the server to listen on port `3000` and use a `console.log` to tell us when it is listening. Open the .env file and create a variable called SERVER_PORT that equals 3000. We can destructure SERVER_PORT from process.env to make our code look nicer.
+Finally, we'll want to tell the server to listen on port `3000` and use a `console.log` to tell us when it is listening. Open the `.env` file and create a variable called SERVER_PORT that equals 3000. We can destructure SERVER_PORT from process.env to make our code look nicer.
 
 ```js
 require('dotenv').config()
@@ -148,7 +148,7 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database, it should look something like this `postgres://username:password@host/dbname?ssl=true`.
 
-Dont forget that we can destructure CONNECTION_STRING from process.env just like we did with SERVER_PORT
+Don't forget that we can destructure CONNECTION_STRING from process.env just like we did with SERVER_PORT.
 
 Using the `CONNECTION_STRING`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
 
