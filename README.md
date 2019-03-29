@@ -13,8 +13,9 @@ In this step, we are going to create a bare-bones server.
 ### Instructions
 
 * Run `npm init -y`.
-* Use npm to install and save `express`, `body-parser`, `dotenv` and `massive`.
+* Use npm to install and save `express`, `dotenv` and `massive`.
 * Create a `.env` file.
+  * Define a variable inside named `SERVER_PORT` and set it to `3000`.
 * Create a `.gitignore` to ignore the `node_modules` folder and the `.env` file.
 * Create an `index.js` file.
 * Require all the packages that we installed and saved.
@@ -26,53 +27,46 @@ In this step, we are going to create a bare-bones server.
 
 <br />
 
-Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install --save express body-parser massive dotenv` to get all the packages we'll need for this project.
+Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install express massive dotenv` to get all the packages we'll need for this project.
 
-After that is finished, we can see it created a `node_modules` folder. We never want to include this folder on GitHub, so let's create a `.gitignore` that will ignore `node_modules`. Create a file and name it `.env`. This file also needs to be included in the `.gitignore`. After that, we're ready to start creating our server. Create an `index.js` file and `require` all the packages we install at the top.
+After that is finished, we can see it created a `node_modules` folder. We never want to include this folder on GitHub, so let's create a `.gitignore` that will ignore `node_modules`. Create a file and name it `.env`. This file also needs to be included in the `.gitignore`. Inside this file we will set up our port. Create a variable with the name `SERVER_PORT` and set it equal to 3000.
+
+```
+SERVER_PORT = 3000
+```
+
+After that, we're ready to start creating our server. Create an `index.js` file and `require` all the packages we install at the top.
 
 ```js
-const express = require('express');
-const bodyParser = require('body-parser');
-const massive = require('massive');
 require('dotenv').config()
+const express = require('express');
+const massive = require('massive');
 ```
 
 Now that our `index.js` file has access to all our packages, let's create a basic server. We'll begin by saving `express()` to a variable called `app`.
 
 ```js
-const express = require('express');
-const bodyParser = require('body-parser');
-const massive = require('massive');
-require('dotenv').config()
-
 const app = express();
 ```
 
-Then, we'll want to use our `bodyParser` middleware.
+Next we will destructure the `SERVER_PORT` variable off of `process.env`.
 
 ```js
-const express = require('express');
-const bodyParser = require('body-parser');
-const massive = require('massive');
-require('dotenv').config()
-
-const app = express();
-app.use( bodyParser.json() );
+const { SERVER_PORT } = process.env;
 ```
 
-Finally, we'll want to tell the server to listen on port `3000` and use a `console.log` to tell us when it is listening.
+Then, we'll want to use our `express.json` middleware.
 
 ```js
-const express = require('express');
-const bodyParser = require('body-parser');
-const massive = require('massive');
-require('dotenv').config()
+app.use(express.json());
+```
 
-const app = express();
-app.use( bodyParser.json() );
+Finally, we'll want to tell the server to listen on port `3000` using the variable from our `.env` and use a `console.log` to tell us when it is listening.
 
-const port = process.env.PORT || 3000;
-app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+```js
+app.listen(SERVER_PORT, () => {
+  console.log(`Server listening on port ${SERVER_PORT}.`);
+});
 ```
 
 </details>
@@ -95,16 +89,20 @@ node_modules
 <summary> <code> index.js </code> </summary>
 
 ```js
-const express = require('express');
-const bodyParser = require('body-parser');
-const massive = require('massive');
-require('dotenv').config()
+require("dotenv").config();
+const express = require("express");
+const massive = require("massive");
 
 const app = express();
-app.use( bodyParser.json() );
 
-const port = process.env.PORT || 3000;
-app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+const { SERVER_PORT } = process.env;
+
+app.use(express.json());
+
+app.listen(SERVER_PORT, () => {
+  console.log(`Server listening on port ${SERVER_PORT}.`);
+});
+
 ```
 
 </details>
@@ -119,7 +117,6 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 * Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database.
   * Make sure to add `?ssl=true` at end of your connection string.
-* Also add a port value to the `.env` with the value being 3000.
 * Use `massive` and the `CONNECTION_STRING` to establish a connection.
 * In the `.then` callback from `massive`, set `db` on app to equal the database instance.
 * Make sure to add a `.catch()` with a callback function. 
@@ -133,36 +130,43 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database, it should look something like this `postgres://username:password@host/dbname?ssl=true`.
 
-Using the `CONNECTION_STRING`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
+Then destructure `CONNECTION_STRING` off of `process.env` in the server. Using the `CONNECTION_STRING`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
 
 ```
 CONNECTION_STRING=postgres://username:password@host/dbname?ssl=true
 ```
 
 ```js
-massive( process.env.CONNECTION_STRING );
+const { SERVER_PORT, CONNECTION_STRING } = process.env;
+```
+
+```js
+massive(CONNECTION_STRING);
 ```
 
 We'll want to execute some logic when the promise is fulfilled, so let's chain a `.then` to it. Be sure to capture the database instance in the first parameter.
 
 ```js
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {} );
+massive(CONNECTION_STRING).then(dbInstance => {});
 ```
 
 Now that we have the `dbInstance`, we can set it onto `app`. Let's have our function return `app.set('db', dbInstance)`.
 
 ```js
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {
-  app.set('db', dbInstance)
-});
+massive(CONNECTION_STRING)
+  .then(dbInstance => {
+    app.set('db', dbInstance);
+  });
 ```
 
 Finally, we need to add a `.catch` so that we can `console.log` any error we might receive. Do so by chaining `.catch` after the `.then`. The `.catch` takes a callback function. Name the callback function parameter `err`. If `.catch` is invoked, `err` will be the error that was received. Add a `console.log` to log the error.
 
 ```js
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {
-  app.set('db', dbInstance)
-}).catch( err => console.log(err) );
+massive(CONNECTION_STRING)
+  .then(dbInstance => {
+    app.set("db", dbInstance);
+  })
+  .catch(err => console.log(err));
 ```
 
 </details>
@@ -174,19 +178,26 @@ massive( process.env.CONNECTION_STRING ).then( dbInstance => {
 <summary> <code> index.js </code> </summary>
 
 ```js
-const express = require('express');
-const bodyParser = require('body-parser');
-const massive = require('massive');
-require('dotenv').config()
+require("dotenv").config();
+const express = require("express");
+const massive = require("massive");
 
 const app = express();
-app.use( bodyParser.json() );
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {
-  app.set('db', dbInstance)
-}).catch( err => console.log(err) );
 
-const port = process.env.PORT || 3000;
-app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+const { SERVER_PORT, CONNECTION_STRING } = process.env;
+
+massive(CONNECTION_STRING)
+  .then(dbInstance => {
+    app.set("db", dbInstance);
+  })
+  .catch(err => console.log(err));
+
+app.use(express.json());
+
+app.listen(SERVER_PORT, () => {
+  console.log(`Server listening on port ${SERVER_PORT}.`);
+});
+
 ```
 
 </details>
@@ -202,6 +213,8 @@ In this step, we are going to create our table and the `.sql` files we'll need t
 * description - varchar(80)
 * price - integer
 * image_url - text
+
+Note: SQLTabs may highlight `name` and `description`. Use them as your column names anyway, otherwise your Postman tests will fail.
 
 ### Instructions
 
@@ -318,7 +331,7 @@ INSERT INTO product ( name, description, price, image_url ) VALUES ( $1, $2, $3,
 <summary> <code> read_products.sql </code> </summary>
 
 ```sql
-SELECT * FROM products;
+SELECT * FROM product;
 ```
 
 </details>
@@ -563,26 +576,33 @@ In this step, we will create endpoints that will call the methods on our control
 <summary> <code> index.js </code> </summary>
 
 ```js
-const express = require('express');
-const bodyParser = require('body-parser');
-const massive = require('massive');
-require('dotenv').config()
-const products_controller = require('./products_controller');
+require("dotenv").config();
+const express = require("express");
+const massive = require("massive");
+const products_controller = require("./products_controller");
 
 const app = express();
-app.use( bodyParser.json() );
-massive( process.env.CONNECTION_STRING ).then( dbInstance => {
-  app.set('db', dbInstance)
-}).catch( err => console.log(err) );
 
-app.post( '/api/products', products_controller.create );
-app.get( '/api/products', products_controller.getAll );
-app.get( '/api/products/:id', products_controller.getOne );
-app.put( '/api/products/:id', products_controller.update );
-app.delete( '/api/products/:id', products_controller.delete );
+const { SERVER_PORT, CONNECTION_STRING } = process.env;
 
-const port = process.env.PORT || 3000;
-app.listen( port, () => { console.log(`Server listening on port ${port}.`); } );
+massive(CONNECTION_STRING)
+  .then(dbInstance => {
+    app.set("db", dbInstance);
+  })
+  .catch(err => console.log(err));
+
+app.use(express.json());
+
+app.post('/api/products', products_controller.create);
+app.get('/api/products', products_controller.getAll);
+app.get('/api/products/:id', products_controller.getOne);
+app.put('/api/products/:id', products_controller.update);
+app.delete('/api/products/:id', products_controller.delete);
+
+app.listen(SERVER_PORT, () => {
+  console.log(`Server listening on port ${SERVER_PORT}.`);
+});
+
 ```
 
 </details>
@@ -627,9 +647,9 @@ module.exports = {
 
   getOne: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
-    const { params } = req;
+    const { id } = req.params;
 
-    dbInstance.read_product( params.id )
+    dbInstance.read_product( id )
       .then( product => res.status(200).send( product ) )
       .catch( err => {
         res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
@@ -662,9 +682,9 @@ module.exports = {
 
   delete: ( req, res, next ) => {
     const dbInstance = req.app.get('db');
-    const { params } = req;
+    const { id } = req.params;
 
-    dbInstance.delete_product( params.id )
+    dbInstance.delete_product( id )
       .then( () => res.sendStatus(200) )
       .catch( err => {
         res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
@@ -684,63 +704,63 @@ module.exports = {
 
 ```js
 module.exports = {
-  create: ( req, res, next ) => {
+  create: (req, res, next) => {
     const dbInstance = req.app.get('db');
     const { name, description, price, image_url } = req.body;
 
-    dbInstance.create_product([ name, description, price, image_url ])
-      .then( () => res.sendStatus(200) )
-      .catch( err => {
-        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+    dbInstance.create_product([name, description, price, image_url])
+      .then(() => res.sendStatus(200))
+      .catch(err => {
+        res.status(500).send({ errorMessage: "Oops! Something went wrong. Our engineers have been informed!" });
         console.log(err)
-      } );
+      });
   },
 
-  getOne: ( req, res, next ) => {
+  getOne: (req, res, next) => {
     const dbInstance = req.app.get('db');
-    const { params } = req;
+    const { id } = req.params;
 
-    dbInstance.read_product([ params.id ])
-      .then( product => res.status(200).send( product ) )
-      .catch( err => {
-        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+    dbInstance.read_product(id)
+      .then(product => res.status(200).send(product))
+      .catch(err => {
+        res.status(500).send({ errorMessage: "Oops! Something went wrong. Our engineers have been informed!" });
         console.log(err)
-      } );
+      });
   },
 
-  getAll: ( req, res, next ) => {
+  getAll: (req, res, next) => {
     const dbInstance = req.app.get('db');
 
     dbInstance.read_products()
-      .then( products => res.status(200).send( products ) )
-      .catch( err => {
-        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+      .then(products => res.status(200).send(products))
+      .catch(err => {
+        res.status(500).send({ errorMessage: "Oops! Something went wrong. Our engineers have been informed!" });
         console.log(err)
-      } );
+      });
   },
 
-  update: ( req, res, next ) => {
+  update: (req, res, next) => {
     const dbInstance = req.app.get('db');
     const { params, query } = req;
 
-    dbInstance.update_product([ params.id, query.desc ])
-      .then( () => res.sendStatus(200) )
-      .catch( err => {
-        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+    dbInstance.update_product([params.id, query.desc])
+      .then(() => res.sendStatus(200))
+      .catch(err => {
+        res.status(500).send({ errorMessage: "Oops! Something went wrong. Our engineers have been informed!" });
         console.log(err)
-      } );
+      });
   },
 
-  delete: ( req, res, next ) => {
+  delete: (req, res, next) => {
     const dbInstance = req.app.get('db');
-    const { params } = req;
+    const { id } = req.params;
 
-    dbInstance.delete_product([ params.id ])
-      .then( () => res.sendStatus(200) )
-      .catch( err => {
-        res.status(500).send({errorMessage: "Oops! Something went wrong. Our engineers have been informed!"});
+    dbInstance.delete_product(id)
+      .then(() => res.sendStatus(200))
+      .catch(err => {
+        res.status(500).send({ errorMessage: "Oops! Something went wrong. Our engineers have been informed!" });
         console.log(err)
-      } );
+      });
   }
 };
 ```
@@ -755,7 +775,7 @@ In this step, we'll test to make sure all the endpoint are working.
 
 ### Instructions
 
-* Import the provided `postman_collection` into postman and make sure all the tests pass.
+* Import the provided `postman_collection` into `Postman` and make sure all the tests pass.
 
 ### Solution
 
