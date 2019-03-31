@@ -13,12 +13,12 @@ In this step, we are going to create a bare-bones server.
 ### Instructions
 
 * Run `npm init -y`.
-* Use npm to install and save `express`, `dotenv` and `massive`.
+* Use npm to install `express`, `dotenv` and `massive`.
 * Create a `.env` file.
   * Define a variable inside named `SERVER_PORT` and set it to `3000`.
 * Create a `.gitignore` to ignore the `node_modules` folder and the `.env` file.
 * Create an `index.js` file.
-* Require all the packages that we installed and saved.
+* Require all the packages that we installed.
 * Get your server listening on port `3000`.
 
 <details>
@@ -27,7 +27,7 @@ In this step, we are going to create a bare-bones server.
 
 <br />
 
-Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install --save` to install and save packages to it. Run `npm install express massive dotenv` to get all the packages we'll need for this project.
+Let's begin by opening a new terminal window and `cd` into the project. Let's create a `package.json` file by running `npm init -y`. Using the `-y` flag, we'll get a package.json file with all the default values. Now that we have a `package.json` file, we can use `npm install` to install packages to it. Run `npm install express massive dotenv` to get all the packages we'll need for this project.
 
 After that is finished, we can see it created a `node_modules` folder. We never want to include this folder on GitHub, so let's create a `.gitignore` that will ignore `node_modules`. Create a file and name it `.env`. This file also needs to be included in the `.gitignore`. Inside this file we will set up our port. Create a variable with the name `SERVER_PORT` and set it equal to 3000.
 
@@ -213,6 +213,8 @@ In this step, we are going to create our table and the `.sql` files we'll need t
 * description - varchar(80)
 * price - integer
 * image_url - text
+
+Note: SQLTabs may highlight `name` and `description`. Use them as your column names anyway, otherwise your Postman tests will fail.
 
 ### Instructions
 
