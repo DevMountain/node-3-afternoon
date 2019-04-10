@@ -788,6 +788,29 @@ In this step, we'll test to make sure all the endpoint are working.
 * Create a single view that can insert, read, update, and delete products.
 * Create a second view that just reads the products and displays them in a pretty way (like Jane.com or amazon).
 
+## Resources
+
+<details>
+
+<summary> <code> Massive </code> </summary>
+
+* [Database Functions](https://massivejs.org/docs/functions-and-scripts#database-functions)
+* [Express Example](https://massivejs.org/docs/framework-examples#express)
+ _Note: In the example, they break up the connection string into pieces. We just use one long connection string_
+
+</details>
+
+<details>
+
+<summary> <code> SQL </code> </summary>
+
+* [SQL Teaching](http://www.sqlteaching.com/)
+* [SQL Bolt](http://sqlbolt.com/)
+
+</details>
+
+
+
 ## Contributions
 
 If you see a problem or a typo, please fork, make the necessary changes, and create a pull request so we can review your changes and merge them into the master repo and branch.
