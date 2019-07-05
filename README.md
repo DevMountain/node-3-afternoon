@@ -565,7 +565,7 @@ In this step, we will create endpoints that will call the methods on our control
 * Create the following endpoints: ( `request method`, `url`, `controller method` )
   * `GET` - `/api/products` - `getAll`.
   * `GET` - `/api/products/:id` - `getOne`.
-  * `PUT` - `/api/products/:id?desc=...` - `update`.
+  * `PUT` - `/api/products/:id` - `update`.
   * `POST` - `/api/products` - `create`.
   * `DELETE` - `/api/products/:id` - `delete`.
 
