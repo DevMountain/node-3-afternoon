@@ -226,7 +226,7 @@ Note: SQLTabs may highlight `name` and `description`. Use them as your column na
   * Create a `update_product.sql` file.
   * Create a `delete_product.sql` file.
 * `create_product.sql`:
-  * The SQL should be able to add a new product to the `products` table.
+  * The SQL should be able to add a new product to the `product` table.
   * The SQL should have four parameters ( name, description, price, image_url ).
 * `read_products.sql`:
   * The SQL should be able to return all products from the `product` table.
@@ -247,7 +247,7 @@ Note: SQLTabs may highlight `name` and `description`. Use them as your column na
 
 <br />
 
-Now that we have a method of connecting to our database and have an instance ready to go on `app`, we are ready to start creating the `sql` files that will interact with our database and a `products` table. Let's begin by creating a `products` table that follows the schema in the summary. The final syntax will look like:
+Now that we have a method of connecting to our database and have an instance ready to go on `app`, we are ready to start creating the `sql` files that will interact with our database and a `product` table. Let's begin by creating a `product` table that follows the schema in the summary. The final syntax will look like:
 
 ```sql
 CREATE TABLE product (
