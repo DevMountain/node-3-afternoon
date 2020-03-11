@@ -116,8 +116,9 @@ In this step, we are going to add massive to the server so we can connect to a d
 ### Instructions
 
 * Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database.
-  * Make sure to add `?ssl=true` at end of your connection string.
+  * If you copy your connection string from SQL Tabs, make sure to remove the `?ssl=true` from the end.
 * Use `massive` and the `CONNECTION_STRING` to establish a connection.
+  * Envoke `massive` and pass in an object containing `connectionString` and `ssl` properties
 * In the `.then` callback from `massive`, set `db` on app to equal the database instance.
 * Make sure to add a `.catch()` with a callback function. 
 * In the callback of the `.catch`, `console.log` the error that would be received if the request was rejected.
@@ -128,12 +129,12 @@ In this step, we are going to add massive to the server so we can connect to a d
 
 <br />
 
-Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database, it should look something like this `postgres://username:password@host/dbname?ssl=true`.
+Now that we have a basic node server ready to go, let's modify it to connect to a postgres database. Open the `.env` file and create a variable called `CONNECTION_STRING` that equals the URI connection string from your Heroku database, it should look something like this `postgres://username:password@host/dbname`.
 
-Then destructure `CONNECTION_STRING` off of `process.env` in the server. Using the `CONNECTION_STRING`, we can invoke `massive` and pass it in as the first argument. This will return a `promise`.
+Then destructure `CONNECTION_STRING` off of `process.env` in the server. Using the `CONNECTION_STRING`, we can invoke `massive` and pass it in as the first argument inside of an object. This will return a `promise`. Add `ssl: {rejectUnauthorized: false}` to the passed in object.
 
 ```
-CONNECTION_STRING=postgres://username:password@host/dbname?ssl=true
+CONNECTION_STRING=postgres://username:password@host/dbname
 ```
 
 ```js
@@ -141,19 +142,28 @@ const { SERVER_PORT, CONNECTION_STRING } = process.env;
 ```
 
 ```js
-massive(CONNECTION_STRING);
+massive({
+connectionString: CONNECTION_STRING,
+ssl: {rejectUnauthorized: false}
+});
 ```
 
 We'll want to execute some logic when the promise is fulfilled, so let's chain a `.then` to it. Be sure to capture the database instance in the first parameter.
 
 ```js
-massive(CONNECTION_STRING).then(dbInstance => {});
+massive({
+connectionString: CONNECTION_STRING,
+ssl: {rejectUnauthorized: false}
+}).then(dbInstance => {});
 ```
 
 Now that we have the `dbInstance`, we can set it onto `app`. Let's have our function return `app.set('db', dbInstance)`.
 
 ```js
-massive(CONNECTION_STRING)
+massive({
+connectionString: CONNECTION_STRING,
+ssl: {rejectUnauthorized: false}
+})
   .then(dbInstance => {
     app.set('db', dbInstance);
   });
@@ -162,7 +172,10 @@ massive(CONNECTION_STRING)
 Finally, we need to add a `.catch` so that we can `console.log` any error we might receive. Do so by chaining `.catch` after the `.then`. The `.catch` takes a callback function. Name the callback function parameter `err`. If `.catch` is invoked, `err` will be the error that was received. Add a `console.log` to log the error.
 
 ```js
-massive(CONNECTION_STRING)
+massive({
+connectionString: CONNECTION_STRING,
+ssl: {rejectUnauthorized: false}
+})
   .then(dbInstance => {
     app.set("db", dbInstance);
   })
@@ -186,7 +199,10 @@ const app = express();
 
 const { SERVER_PORT, CONNECTION_STRING } = process.env;
 
-massive(CONNECTION_STRING)
+massive({
+connectionString: CONNECTION_STRING,
+ssl: {rejectUnauthorized: false}
+})
   .then(dbInstance => {
     app.set("db", dbInstance);
   })
@@ -585,7 +601,10 @@ const app = express();
 
 const { SERVER_PORT, CONNECTION_STRING } = process.env;
 
-massive(CONNECTION_STRING)
+massive({
+connectionString: CONNECTION_STRING,
+ssl: {rejectUnauthorized: false}
+})
   .then(dbInstance => {
     app.set("db", dbInstance);
   })
